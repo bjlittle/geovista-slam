@@ -1,0 +1,40 @@
+name: slam-dev
+
+channels:
+  - conda-forge
+
+dependencies:
+
+# setup dependencies
+  - setuptools >=45
+  - setuptools-scm >=7
+
+# core dependencies
+  - cartopy >=0.20
+  - click
+  - click-default-group
+  - pooch
+  - pyproj >=3.3
+  - pyvista
+  - pyvistaqt
+  - vtk >=9
+
+# sample data dependencies
+  - netcdf4 <1.6.1
+
+# cmap dependencies
+  - cmocean
+  - colorcet
+
+# dev dependencies
+  - pip
+  - pre-commit
+
+# test dependencies
+  - codecov
+  - pytest >=6.0
+  - pytest-cov
+
+  - iris
+  - pip:
+    - git+https://github.com/bjlittle/geovista.git
