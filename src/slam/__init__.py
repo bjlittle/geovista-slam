@@ -52,13 +52,16 @@ MDI: int = -1
 
 # TODO:
 #   - trap for non-quad mesh
-#   - add diagnostics (warnings)
+#   - add developer diagnostics (warnings)
 #   - doc-strings
 #   - test coverage
 #   - restructure:
 #       - factories
 #       - anything spanning mesh dimension
 #   - discover crs from mesh
+#   - load/save
+#   - enable ci services
+#   - repr/str
 
 
 def edge_factory() -> np.ndarray:
