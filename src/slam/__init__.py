@@ -420,21 +420,30 @@ class Transform:
             face_x, face_y = transformed[:, 0], transformed[:, 1]
 
         grid_x, grid_y = face_x[grid], face_y[grid]
-        uniform_x = np.unique(np.diff(grid_x, axis=0))
-        uniform_y = np.unique(np.diff(grid_y, axis=1))
+        uniform_x = np.unique(np.abs(np.diff(grid_x, axis=0)))
+        uniform_y = np.unique(np.abs(np.diff(grid_y, axis=1)))
 
         def is_uniform() -> bool:
-            return uniform_x.size == 1 and uniform_y.size == 1
+            result = uniform_x.size == 1 and uniform_y.size == 1
+            if not result:
+                result = (
+                    np.allclose(uniform_x[1:], np.mean(uniform_x[1:]))
+                    if uniform_x.size > 1
+                    else True
+                )
+                if result and uniform_y.size > 1:
+                    result = np.allclose(uniform_y[1:], np.mean(uniform_y[1:]))
+            return result
 
         if rounding and decimals is None and not is_uniform():
-            hwm = np.max([np.abs(uniform_x.max()), np.abs(uniform_y.max())])
+            hwm = np.max([uniform_x.max(), uniform_y.max()])
             decimals = np.trunc(np.log10(hwm))
             if decimals < 0:
                 decimals = int(np.abs(decimals))
                 round_grid_x = np.round(grid_x, decimals=decimals)
                 round_grid_y = np.round(grid_y, decimals=decimals)
-                uniform_x = np.unique(np.diff(round_grid_x, axis=0))
-                uniform_y = np.unique(np.diff(round_grid_y, axis=1))
+                uniform_x = np.unique(np.abs(np.diff(round_grid_x, axis=0)))
+                uniform_y = np.unique(np.abs(np.diff(round_grid_y, axis=1)))
                 if is_uniform():
                     grid_x, grid_y = round_grid_x, round_grid_y
 
