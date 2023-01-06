@@ -8,6 +8,7 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
+import warnings
 
 import geovista as gv
 from geovista.common import to_xy0, wrap
@@ -445,6 +446,8 @@ class Transform:
                 uniform_x = np.unique(np.abs(np.diff(round_grid_x, axis=0)))
                 uniform_y = np.unique(np.abs(np.diff(round_grid_y, axis=1)))
                 if is_uniform():
+                    wmsg = f'Auto-rounding 1-D coordinate points to "{decimals}" decimal places.'
+                    warnings.warn(wmsg)
                     grid_x, grid_y = round_grid_x, round_grid_y
 
         if is_uniform():
