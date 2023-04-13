@@ -4,4 +4,5 @@ exclude .git_archival.txt
 exclude .gitattributes
 exclude .gitignore
 exclude .pre-commit-config.yaml
+include *.md
 recursive-include src *.py
