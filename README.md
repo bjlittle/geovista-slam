@@ -1,7 +1,7 @@
-# slam
+# geovista-slam
 
-Utility to convert [CF UGRID](https://ugrid-conventions.github.io/ugrid-conventions/) Local Area Model quad-cell meshes
-into structured rectilinear or curvilinear grids using [GeoVista](https://github.com/bjlittle/geovista).
+[GeoVista](https://github.com/bjlittle/geovista) utility to convert [CF UGRID](https://ugrid-conventions.github.io/ugrid-conventions/) Local Area Model quad-cell meshes
+into structured rectilinear or curvilinear grids.
 
 | |                                                                                                                                                                                                                                                        |
 | --- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
