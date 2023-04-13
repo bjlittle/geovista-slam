@@ -1,0 +1,7 @@
+prune requirements
+prune scripts
+exclude .git_archival.txt
+exclude .gitattributes
+exclude .gitignore
+exclude .pre-commit-config.yaml
+recursive-include src *.py
