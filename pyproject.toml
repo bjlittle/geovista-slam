@@ -32,6 +32,35 @@ minversion = "6.0"
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS NUMBER"
 testpaths = "tests"
 
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+select = [
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # flake8-bugbear
+    "B",
+    # flake8-comprehensions
+    "C4",
+    # isort
+    "I",
+    # pyupgrade
+    "UP",
+]
+
+[tool.ruff.isort]
+force-sort-within-sections = true
+known-first-party = ["slam"]
+
+[tool.ruff.mccabe]
+max-complexity = 22
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
 [tool.setuptools_scm]
 write_to = "src/slam/_version.py"
 local_scheme = "dirty-tag"

@@ -7,7 +7,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Tuple, Union
 import warnings
 
 import geovista as gv
@@ -29,14 +29,14 @@ __all__ = ("Transform",)
 # type aliases
 CoordLike = Union[AuxCoord, DimCoord]
 PathLike = Union[str, Path]
-ShapeLike = Union[List[int], Tuple[int]]
+ShapeLike = Union[list[int], Tuple[int]]
 
 CELL_IDS: str = "slamIdsGlobal"
 CELL_IDS_LOCAL: str = "slamIdsLocal"
 DEFAULT_FAST_SOLVE: bool = False
 DEFAULT_ROUNDING: bool = True
 DEFAULT_SHARE_SPATIAL: bool = False
-DEFAULT_CF_COORDINATE_SYSTEM: List[Dict[str, Any], Dict[str, Any]] = [
+DEFAULT_CF_COORDINATE_SYSTEM: list[dict[str, Any], dict[str, Any]] = [
     {
         "standard_name": "longitude",
         "long_name": "longitude coordinate",
@@ -114,10 +114,10 @@ class Transform:
     def __init__(
         self,
         ucube: Cube,
-        crs: Optional[CoordSystem] = None,
-        decimals: Optional[int] = None,
-        fast_solve: Optional[bool] = None,
-        rounding: Optional[bool] = None,
+        crs: CoordSystem | None = None,
+        decimals: int | None = None,
+        fast_solve: bool | None = None,
+        rounding: bool | None = None,
     ):
         """
         TBD
@@ -141,7 +141,7 @@ class Transform:
         )
         self._mesh = ucube.mesh
 
-    def __call__(self, ucube: Cube, share: Optional[bool] = None) -> Cube:
+    def __call__(self, ucube: Cube, share: bool | None = None) -> Cube:
         """
         TBD
 
@@ -162,7 +162,10 @@ class Transform:
         self._verify(ucube)
 
         if ucube.mesh != self._mesh:
-            emsg = f"The provided unstructured cube '{ucube.name()}' has a different CF-UGRID mesh."
+            emsg = (
+                f"The provided unstructured cube '{ucube.name()}' has a "
+                "different CF-UGRID mesh."
+            )
             raise ValueError(emsg)
 
         return self._restructure(ucube, self._structure, share=share)
@@ -201,7 +204,7 @@ class Transform:
         return shape
 
     @staticmethod
-    def _build_coords(points: Points, crs: Optional[CoordSystem] = None) -> Coords:
+    def _build_coords(points: Points, crs: CoordSystem | None = None) -> Coords:
         """
         TBD
 
@@ -220,7 +223,7 @@ class Transform:
 
         """
 
-        def build(values: np.ndarray, circular: Optional[bool] = False) -> CoordLike:
+        def build(values: np.ndarray, circular: bool | None = False) -> CoordLike:
             factory = DimCoord if values.ndim == 1 else AuxCoord
             cf = (
                 DEFAULT_CF_COORDINATE_SYSTEM
@@ -298,7 +301,7 @@ class Transform:
         return mesh
 
     @staticmethod
-    def _extract_edges(mesh: PolyData, iteration: Optional[int] = 0) -> Edge:
+    def _extract_edges(mesh: PolyData, iteration: int | None = 0) -> Edge:
         """
         TBD
 
@@ -338,8 +341,8 @@ class Transform:
         else:
             if (ncorners := corners.size) != 4:
                 emsg = (
-                    f"Failed to extract corners of bounded region, expected 4 corners but "
-                    f"found {ncorners} [iteration={iteration}]."
+                    "Failed to extract corners of bounded region, expected 4 "
+                    f"corners but found {ncorners} [iteration={iteration}]."
                 )
                 raise ValueError(emsg)
 
@@ -350,8 +353,8 @@ class Transform:
             def extract(
                 id1: int,
                 id2: int,
-                offset1: Optional[int] = 0,
-                offset2: Optional[int] = 0,
+                offset1: int | None = 0,
+                offset2: int | None = 0,
             ) -> np.ndarray:
                 start = np.where(cell_ids == id1)[0][-1] + offset1
                 end = np.where(cell_ids == id2)[0][-1] + offset2
@@ -376,9 +379,9 @@ class Transform:
         ucube: Cube,
         mesh: PolyData,
         grid: np.ndarray,
-        crs: Optional[CoordSystem] = None,
-        decimals: Optional[int] = None,
-        rounding: Optional[bool] = None,
+        crs: CoordSystem | None = None,
+        decimals: int | None = None,
+        rounding: bool | None = None,
     ) -> Points:
         """
         TBD
@@ -446,8 +449,11 @@ class Transform:
                 uniform_x = np.unique(np.abs(np.diff(round_grid_x, axis=0)))
                 uniform_y = np.unique(np.abs(np.diff(round_grid_y, axis=1)))
                 if is_uniform():
-                    wmsg = f'Auto-rounding 1-D coordinate points to "{decimals}" decimal places.'
-                    warnings.warn(wmsg)
+                    wmsg = (
+                        "Auto-rounding 1-D coordinate points to "
+                        f'"{decimals}" decimal places.'
+                    )
+                    warnings.warn(wmsg, stacklevel=2)
                     grid_x, grid_y = round_grid_x, round_grid_y
 
         if is_uniform():
@@ -478,7 +484,7 @@ class Transform:
             rows, cols = shape
             size = np.prod(shape)
 
-            def delta(arg: np.ndarray, step: Optional[int] = 1) -> bool:
+            def delta(arg: np.ndarray, step: int | None = 1) -> bool:
                 udiff = np.unique(np.diff(arg))
                 return (udiff.size == 1) and (udiff[0] == step)
 
@@ -516,7 +522,7 @@ class Transform:
         mesh: PolyData,
         edge: Edge,
         grid: np.ndarray,
-        iteration: Optional[int] = 0,
+        iteration: int | None = 0,
     ):
         """
         TBD
@@ -577,7 +583,7 @@ class Transform:
     def _restructure(
         ucube: Cube,
         structure: Structure,
-        share: Optional[bool] = None,
+        share: bool | None = None,
     ) -> Cube:
         """
 
@@ -612,8 +618,8 @@ class Transform:
             else:
                 mapping[dim] = dim + 1
 
-        def remap(dims: Tuple[int]) -> Tuple[int]:
-            return tuple(map(lambda dim: mapping[dim], dims))
+        def remap(dims: tuple[int]) -> tuple[int]:
+            return tuple(mapping[dim] for dim in dims)
 
         # add dim coordinates to structured cube
         for coord in ucube.dim_coords:
@@ -654,10 +660,10 @@ class Transform:
     def _solver(
         cls: Transform,
         ucube: Cube,
-        crs: Optional[CoordSystem] = None,
-        decimals: Optional[int] = None,
-        fast_solve: Optional[bool] = None,
-        rounding: Optional[bool] = None,
+        crs: CoordSystem | None = None,
+        decimals: int | None = None,
+        fast_solve: bool | None = None,
+        rounding: bool | None = None,
     ) -> Structure:
         """
         TBD
@@ -701,7 +707,7 @@ class Transform:
         return structure
 
     @staticmethod
-    def _verify(ucube: Cube, crs: Optional[CoordSystem] = None) -> None:
+    def _verify(ucube: Cube, crs: CoordSystem | None = None) -> None:
         """
         TBD
 
@@ -716,12 +722,18 @@ class Transform:
 
         """
         if ucube.mesh is None:
-            emsg = f"Expected an unstructured cube, but no mesh found on '{ucube.name()}' cube."
+            emsg = (
+                "Expected an unstructured cube, but no mesh found on "
+                f"'{ucube.name()}' cube."
+            )
             raise ValueError(emsg)
 
         if crs:
             if not isinstance(crs, CoordSystem):
-                emsg = f"Expected an 'iris.coord_system.CoordSystem' instance, got {type(crs)} instead."
+                emsg = (
+                    "Expected an 'iris.coord_system.CoordSystem' instance, "
+                    f"got {type(crs)} instead."
+                )
                 raise ValueError(emsg)
 
     @property
@@ -732,10 +744,10 @@ class Transform:
     def from_ugrid(
         cls: Transform,
         ucube: Cube,
-        crs: Optional[CoordSystem] = None,
-        decimals: Optional[int] = None,
-        fast_solve: Optional[bool] = None,
-        rounding: Optional[bool] = None,
+        crs: CoordSystem | None = None,
+        decimals: int | None = None,
+        fast_solve: bool | None = None,
+        rounding: bool | None = None,
     ) -> Cube:
         """
         TBD
