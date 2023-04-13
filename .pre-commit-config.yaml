@@ -3,54 +3,54 @@
 
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v4.4.0"
-    hooks:
-      # Prevent giant files from being committed.
-      - id: check-added-large-files
-      # Check whether files parse as valid Python.
-      - id: check-ast
-      # Check for file name conflicts on case-insensitive filesytems.
-      - id: check-case-conflict
-      # Check for files that contain merge conflict strings.
-      - id: check-merge-conflict
-      # Check for debugger imports and py37+ `breakpoint()` calls in Python source.
-      - id: debug-statements
-      # Check TOML file syntax.
-      - id: check-toml
-      # Check YAML file syntax.
-      - id: check-yaml
-      # Makes sure files end in a newline and only a newline
-      - id: end-of-file-fixer
-      # Replaces or checks mixed line ending
-      - id: mixed-line-ending
-      # Don't commit to main branch.
-#      - id: no-commit-to-branch
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: "v4.4.0"
+  hooks:
+    # Prevent giant files from being committed.
+  - id: check-added-large-files
+    # Check whether files parse as valid Python.
+  - id: check-ast
+    # Check for file name conflicts on case-insensitive filesytems.
+  - id: check-case-conflict
+    # Check for files that contain merge conflict strings.
+  - id: check-merge-conflict
+    # Check for debugger imports and py37+ `breakpoint()` calls in Python source.
+  - id: debug-statements
+    # Check TOML file syntax.
+  - id: check-toml
+    # Check YAML file syntax.
+  - id: check-yaml
+    # Makes sure files end in a newline and only a newline
+  - id: end-of-file-fixer
+    # Replaces or checks mixed line ending
+  - id: mixed-line-ending
+    # Don't commit to main branch.
+#   - id: no-commit-to-branch
 
 
-  - repo: https://github.com/psf/black
-    rev: "23.3.0"
-    hooks:
-      - id: black
-        types: [file, python]
-        args: [--config=./pyproject.toml]
+- repo: https://github.com/psf/black
+  rev: "23.3.0"
+  hooks:
+  - id: black
+    types: [file, python]
+    args: [--config=./pyproject.toml]
 
-  - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.4"
-    hooks:
-    - id: codespell
-      types_or: [python, markdown, rst]
-      additional_dependencies: [tomli]
+- repo: https://github.com/codespell-project/codespell
+  rev: "v2.2.4"
+  hooks:
+  - id: codespell
+    types_or: [python, markdown, rst]
+    additional_dependencies: [tomli]
 
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.260"
-    hooks:
-      - id: ruff
-        types: [file, python]
-        args: [--fix]
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: "v0.0.260"
+  hooks:
+  - id: ruff
+    types: [file, python]
+    args: [--fix]
 
-  - repo: https://github.com/aio-libs/sort-all
-    rev: "v1.2.0"
-    hooks:
-      - id: sort-all
-        types: [file, python]
+- repo: https://github.com/aio-libs/sort-all
+  rev: "v1.2.0"
+  hooks:
+  - id: sort-all
+    types: [file, python]
