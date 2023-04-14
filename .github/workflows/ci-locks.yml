@@ -68,12 +68,6 @@ jobs:
         echo '::group::Show "${{ env.LOCK_FNAME }}" ...'
         cat ${{ env.LOCK_FNAME }}
         echo "::endgroup::"
-        echo "### ⚙️ ${{ env.LOCK_FNAME }}" >> ${GITHUB_STEP_SUMMARY}
-        echo "" >> ${GITHUB_STEP_SUMMARY}
-        echo "<details>" >> ${GITHUB_STEP_SUMMARY}
-        echo "<summary> Click to expand <b>this section ...</b></summary>" >> ${GITHUB_STEP_SUMMARY}
-        cat ${{ env.LOCK_FNAME }} >> ${GITHUB_STEP_SUMMARY}
-        echo "</details>" >> ${GITHUB_STEP_SUMMARY}
 
 
     - uses: actions/upload-artifact@v3
