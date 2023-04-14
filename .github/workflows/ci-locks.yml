@@ -61,13 +61,20 @@ jobs:
         mamba list --name ${{ env.ENV_NAME }} --explicit > ${LOCK_FNAME}
         echo "LOCK_FNAME=${LOCK_FNAME}" >> ${GITHUB_ENV}
 
-    - name: "lock show (python ${{ matrix.python-version }})"
+    - name: "lock summary (python ${{ matrix.python-version }})"
       working-directory: ${{ github.workspace }}/requirements/locks
       run: |
-        
+        # generate summary
         echo "::group::Show ${{ env.LOCK_FNAME }} ..."
-        cat ${LOCK_FNAME}
+        cat ${{ env.LOCK_FNAME }}
         echo "::endgroup::"
+        echo "### ⚙️ ${{ env.LOCK_FNAME }} >> ${GITHUB_STEP_SUMMARY}
+        echo "" >> ${GITHUB_STEP_SUMMARY}
+        echo "<details>" >> ${GITHUB_STEP_SUMMARY}
+        echo "<summary> Click to expand <b>this sections ...</b></summary>" >> ${GITHUB_STEP_SUMMARY}
+        cat ${{ env.LOCK_FNAME }} >> ${GITHUB_STEP_SUMMARY}
+        echo "</details>" >> ${GITHUB_STEP_SUMMARY}
+
 
     - uses: actions/upload-artifact@v3
       with:
@@ -119,7 +126,7 @@ jobs:
       run: |
         echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
         echo "" >> ${GITHUB_STEP_SUMMARY}
-        echo "The following locks pull-request has been auto-generated:
+        echo "The following locks pull-request has been auto-generated:"
         echo "- **PR** #${{ steps.cpr.outputs.pull-request-number }}" >> ${GITHUB_STEP_SUMMARY}
         echo "- **URL** ${{ steps.cpr.outputs.pull-request-url }}" >> ${GITHUB_STEP_SUMMARY}
         echo "- **Operation** [${{ steps.cpr.outputs.pull-request-operation }}]" >> ${GITHUB_STEP_SUMMARY}
