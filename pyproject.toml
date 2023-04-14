@@ -28,7 +28,7 @@ description = "Structured Local Area Model"
 dependencies = [
     "appdirs",
     "geovista",
-    "iris",
+    "scitools-iris",
 ]
 dynamic = [
     "readme",
