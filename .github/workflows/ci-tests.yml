@@ -70,6 +70,7 @@ jobs:
       run: |
         PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
         conda-lock --mamba --channel conda-forge --kind explicit --file ${{ env.ENV_FNAME }} --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
+        cat *.txt
 
     - uses: actions/upload-artifact@v3
       with:
