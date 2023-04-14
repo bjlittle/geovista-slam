@@ -1,0 +1,13 @@
+name: slam-dev
+
+channels:
+  - conda-forge
+
+dependencies:
+
+# setup dependencies
+  - setuptools >=61
+  - setuptools-scm >=7
+
+# core dependencies
+  - vtk 
