@@ -28,6 +28,7 @@ jobs:
 
     env:
       ENV_NAME: "ci-locks"
+      ENV_FNAME: "requirements/geovista.yml"
 
     strategy:
       fail-fast: false
@@ -62,7 +63,7 @@ jobs:
     - name: "lock (python ${{ matrix.python-version }})"
       run: |
         PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
-        conda-lock --channel conda-forge --kind explicit --file --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
+        conda-lock --channel conda-forge --kind explicit --file ${{ env.ENV_FNAME }} --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
 
     - uses: actions/upload-artifact@v3
       with:
