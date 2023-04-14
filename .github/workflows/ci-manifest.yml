@@ -10,6 +10,7 @@ on:
 
   push:
     branches-ignore:
+      - "conda-lock-auto-update"
       - "pre-commit-ci-update-config"
       - "dependabot/*"
 

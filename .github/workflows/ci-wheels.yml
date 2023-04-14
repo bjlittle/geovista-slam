@@ -19,6 +19,7 @@ on:
     tags:
       - "v*"
     branches-ignore:
+      - "conda-lock-auto-update"
       - "pre-commit-ci-update-config"
       - "dependabot/*"
 
@@ -59,7 +60,7 @@ jobs:
   test-artifacts:
     needs: [build-artifacts]
 
-    name: "test wheel (${{ matrix.version }})"
+    name: "test wheel (${{ matrix.python-version }})"
 
     runs-on: ubuntu-latest
 
@@ -67,29 +68,42 @@ jobs:
       run:
         shell: bash -l {0}
 
+    env:
+      ENV_NAME: "ci-wheels"
+
     strategy:
       fail-fast: false
       matrix:
-        version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-python@v4
+    - name: "configure environment"
+      run: |
+        PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
+        echo "LOCK_FILE=${{ github.workspace }}/requirements/locks/${PREFIX}-lock-linux-64.txt" >> ${GITHUB_ENV}
+
+    - name: "mambaforge setup (python ${{ matrix.python-version }})"
+      uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: ${{ matrix.version }}
+        miniforge-variant: Mambaforge
+        miniforge-version: latest
+        activate-environment: ${{ env.ENV_NAME }}
+        auto-update-conda: false
+        environment-file: ${{ env.LOCK_FILE }}
 
     - uses: actions/download-artifact@v3
       with:
         name: pypi-artifacts
         path: ${{ github.workspace }}/dist
 
-    - name: "test wheel (${{ matrix.version }})"
+    - name: "test wheel (${{ matrix.python-version }})"
       run: |
         WHEEL=$(ls -1 dist/*.whl)
-        python -m pip install ${WHEEL}
+        python -m pip install --no-deps ${WHEEL}
         python -c "import slam; print(f'slam version = {slam.__version__}')"
 
 
