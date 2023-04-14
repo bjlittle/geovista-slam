@@ -52,7 +52,7 @@ jobs:
 
     - name: "mamba install"
       run: |
-        mamba install --quiet --name ${{ env.ENV_NAME }} conda-lock geovista
+        mamba install --quiet --name ${{ env.ENV_NAME }} conda-lock
 
     - name: "conda info"
       run: |
@@ -60,8 +60,18 @@ jobs:
         conda info
         conda list
 
-#    - name: "lock (python ${{ matrix.python-version }})"
-#      working-directory: ${{ github.workspace }}/requirements/locks
-#      run: |
-#        PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
-#        conda-lock --mamba --channel conda-forge --kind explicit --file ${{ env.ENV_FNAME }} --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
+    - name: Install OpenGL
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install libglu1-mesa-dev libgl1-mesa-dev libxi-dev libglfw3-dev libgles2-mesa-dev libsdl2-2.0-0 mesa-utils x11-utils
+
+    - name: "lock (python ${{ matrix.python-version }})"
+      working-directory: ${{ github.workspace }}/requirements/locks
+      run: |
+        PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
+        conda-lock --mamba --channel conda-forge --kind explicit --file ${{ env.ENV_FNAME }} --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: lock-artifacts
+        path: ${{ github.workspace }}/requirements/locks/*.txt
