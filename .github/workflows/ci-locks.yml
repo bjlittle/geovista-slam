@@ -51,17 +51,25 @@ jobs:
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
 
-    - name: "lock (python ${{ matrix.python-version }})"
+    - name: "lock generate (python ${{ matrix.python-version }})"
       working-directory: ${{ github.workspace }}/requirements/locks
       run: |
-        LOCK="py$(echo '${{ matrix.python-version }}' | tr -d '.')-lock-linux-64.txt"
+        LOCK_FNAME="py$(echo '${{ matrix.python-version }}' | tr -d '.')-lock-linux-64.txt"
+        echo ${LOCK_FNAME} >> ${GITHUB_ENV}
         mamba env create --name ${{ env.ENV_NAME }} --quiet --file ${{ env.ENV_FNAME }}
-        mamba list --name ${{ env.ENV_NAME }} --explicit > ${LOCK}
+        mamba list --name ${{ env.ENV_NAME }} --explicit > ${LOCK_FNAME}
+
+    - name: "lock resolved (python ${{ matrix.python-version }}"
+      working-directory: ${{ github.workspace }}/requirements/locks
+      run: |
+        echo "::group::${{ env.LOCK_FNAME }} ..."
+        cat ${LOCK_FNAME}
+        echo "::endgroup::"
 
     - uses: actions/upload-artifact@v3
       with:
         name: lock-artifacts
-        path: ${{ github.workspace }}/requirements/locks/*.txt
+        path: ${{ github.workspace }}/requirements/locks/${LOCK_FNAME}
 
 
   create-pr:
