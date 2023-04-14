@@ -119,7 +119,8 @@ jobs:
       run: |
         echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
         echo "" >> ${GITHUB_STEP_SUMMARY}
-        echo "- pull-request #${{ steps.cpr.outputs.pull-request-number }}" >> ${GITHUB_STEP_SUMMARY}
-        echo "- pull-request URL ${{ steps.cpr.outputs.pull-request-url }}" >> ${GITHUB_STEP_SUMMARY}
-        echo "- pull-request operation [${{ steps.cpr.outputs.pull-request-operation }}]" >> ${GITHUB_STEP_SUMMARY}
-        echo "- pull-request SHA ${{ steps.cpr.outputs.pull-request-head-sha }}" >> ${GITHUB_STEP_SUMMARY}
+        echo "The following locks pull-request has been auto-generated:
+        echo "- **PR** #${{ steps.cpr.outputs.pull-request-number }}" >> ${GITHUB_STEP_SUMMARY}
+        echo "- **URL** ${{ steps.cpr.outputs.pull-request-url }}" >> ${GITHUB_STEP_SUMMARY}
+        echo "- **Operation** [${{ steps.cpr.outputs.pull-request-operation }}]" >> ${GITHUB_STEP_SUMMARY}
+        echo "- **SHA** ${{ steps.cpr.outputs.pull-request-head-sha }}" >> ${GITHUB_STEP_SUMMARY}
