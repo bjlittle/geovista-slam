@@ -51,9 +51,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: "conda install"
-      shell: bash
       run: |
-        conda install --quiet --name ${{ env.ENV_NAME }} conda-lock
+        mamba install --quiet --name ${{ env.ENV_NAME }} conda-lock
 
     - name: "conda info"
       run: |
@@ -62,6 +61,7 @@ jobs:
         conda list
 
     - name: "lock (python ${{ matrix.python-version }})"
+      working-directory: ${{ github.workspace }}/requirements/locks
       run: |
         PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
         conda-lock --mamba --channel conda-forge --kind explicit --file ${{ env.ENV_FNAME }} --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
