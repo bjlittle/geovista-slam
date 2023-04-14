@@ -1,0 +1,114 @@
+# Reference:
+#   - https://github.com/actions/cache
+#   - https://github.com/actions/checkout
+#   - https://github.com/actions/download-artifact
+#   - https://github.com/actions/upload-artifact
+#   - https://github.com/conda-incubator/setup-miniconda
+
+name: ci-locks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "3 0 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-locks:
+    name: "lock (python ${{ matrix.version }})"
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: [3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: "conda setup"
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        miniforge-version: latest
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+
+    - name: "conda install"
+      shell: bash
+      run: |
+        conda install --quiet conda-lock
+
+    - name: "conda info"
+      run: |
+        conda info -e
+        conda info
+        conda list
+
+    - name: "conda-lock (python ${{ matrix.python-version }})"
+      run: |
+        PY="py$(echo ${{ matrix.python-version }} | tr -d '.')"
+        conda-lock --channel conda-forge --kind explicit --file --platform linux-64 --filename-template "${PY}-lock-{platform}.txt"
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: lock-artifacts
+        path: ${{ github.workspace }}/requirements/locks/*.txt
+
+#
+#  create-pr:
+#    needs: build-locks
+#    name: "create pull-request"
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v3
+#      with:
+#        fetch-depth: 0
+#
+#    - uses: actions/download-artifact@v3
+#      with:
+#        name: lock-artifacts
+#        path: ${{ github.workspace }}/requirements/locks
+#
+#    - name: "generate token"
+#      uses: tibdex/github-app-token@v1
+#      id: generate-token
+#      with:
+#        app_id: ${{ secrets.AUTH_APP_ID }}
+#        private_key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
+#
+#    - name: "generate pull-request"
+#      id: cpr
+#      uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54
+#      with:
+#        token: ${{ steps.generate-token.outputs.token }}
+#        add-paths: ${{ github.workspace }}/requirements/locks/*.txt
+#        commit-message: "updated conda lock files"
+#        branch: conda-lock-auto-update
+#        delete-branch: true
+#        title: "[geovista.ci] conda lock auto-update"
+#        body: |
+#          🤖 Bleep! Bloop!
+#
+#          Conda lock files for `linux-64`, `osx-64` and `win-64` auto-updated to latest resolved environment of `geovista` dependencies.
+#        labels: |
+#          new: pull request
+#          bot
+#
+#    - name: "show pull-request"
+#      if: steps.cpr.outputs.pull-request-number != ''
+#      run: |
+#        echo "pull-request #${{ steps.cpr.outputs.pull-request-number }}"
+#        echo "pull-request URL ${{ steps.cpr.outputs.pull-request-url }}"
+#        echo "pull-request operation [${{ steps.cpr.outputs.pull-request-operation }}]"
+#        echo "pull-request SHA ${{ steps.cpr.outputs.pull-request-head-sha }}"
