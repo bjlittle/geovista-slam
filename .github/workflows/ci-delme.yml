@@ -1,0 +1,67 @@
+# Reference:
+#   - https://github.com/actions/cache
+#   - https://github.com/actions/checkout
+#   - https://github.com/actions/download-artifact
+#   - https://github.com/actions/upload-artifact
+#   - https://github.com/conda-incubator/setup-miniconda
+
+name: ci-locks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "3 0 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-locks:
+    name: "lock (python ${{ matrix.python-version }})"
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    env:
+      ENV_NAME: "ci-locks"
+      ENV_FNAME: "${{ github.workspace }}/requirements/slam.yml"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.8"] #, "3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: "mambaforge setup (python ${{ matrix.python-version }})"
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        miniforge-variant: Mambaforge
+        miniforge-version: latest
+        activate-environment: ${{ env.ENV_NAME }}
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+
+    - name: "mamba install"
+      run: |
+        mamba install --quiet --name ${{ env.ENV_NAME }} conda-lock pyvista
+
+    - name: "conda info"
+      run: |
+        conda info -e
+        conda info
+        conda list
+
+#    - name: "lock (python ${{ matrix.python-version }})"
+#      working-directory: ${{ github.workspace }}/requirements/locks
+#      run: |
+#        PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
+#        conda-lock --mamba --channel conda-forge --kind explicit --file ${{ env.ENV_FNAME }} --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
