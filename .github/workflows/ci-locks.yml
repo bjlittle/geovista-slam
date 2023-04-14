@@ -71,50 +71,50 @@ jobs:
         name: lock-artifacts
         path: ${{ github.workspace }}/requirements/locks/*.txt
 
-#
-#  create-pr:
-#    needs: build-locks
-#    name: "create pull-request"
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v3
-#      with:
-#        fetch-depth: 0
-#
-#    - uses: actions/download-artifact@v3
-#      with:
-#        name: lock-artifacts
-#        path: ${{ github.workspace }}/requirements/locks
-#
-#    - name: "generate token"
-#      uses: tibdex/github-app-token@v1
-#      id: generate-token
-#      with:
-#        app_id: ${{ secrets.AUTH_APP_ID }}
-#        private_key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
-#
-#    - name: "generate pull-request"
-#      id: cpr
-#      uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54
-#      with:
-#        token: ${{ steps.generate-token.outputs.token }}
-#        add-paths: ${{ github.workspace }}/requirements/locks/*.txt
-#        commit-message: "updated conda lock files"
-#        branch: conda-lock-auto-update
-#        delete-branch: true
-#        title: "[geovista.ci] conda lock auto-update"
-#        body: |
-#          🤖 Bleep! Bloop!
-#
-#          Conda lock files for `linux-64`, `osx-64` and `win-64` auto-updated to latest resolved environment of `geovista` dependencies.
-#        labels: |
-#          new: pull request
-#          bot
-#
-#    - name: "show pull-request"
-#      if: steps.cpr.outputs.pull-request-number != ''
-#      run: |
-#        echo "pull-request #${{ steps.cpr.outputs.pull-request-number }}"
-#        echo "pull-request URL ${{ steps.cpr.outputs.pull-request-url }}"
-#        echo "pull-request operation [${{ steps.cpr.outputs.pull-request-operation }}]"
-#        echo "pull-request SHA ${{ steps.cpr.outputs.pull-request-head-sha }}"
+
+  create-pr:
+    needs: build-locks
+    name: "create pull-request"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: lock-artifacts
+        path: ${{ github.workspace }}/requirements/locks
+
+    - name: "generate token"
+      uses: tibdex/github-app-token@v1
+      id: generate-token
+      with:
+        app_id: ${{ secrets.AUTH_APP_ID }}
+        private_key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
+
+    - name: "generate pull-request"
+      id: cpr
+      uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54
+      with:
+        token: ${{ steps.generate-token.outputs.token }}
+        add-paths: ${{ github.workspace }}/requirements/locks/*.txt
+        commit-message: "updated conda lock files"
+        branch: conda-lock-auto-update
+        delete-branch: true
+        title: "[geovista.ci] conda lock auto-update"
+        body: |
+          🤖 Bleep! Bloop!
+
+          Conda lock files for `linux-64` auto-updated to latest resolved environment of `geovista-slam` dependencies.
+        labels: |
+          new: pull request
+          bot
+
+    - name: "show pull-request"
+      if: steps.cpr.outputs.pull-request-number != ''
+      run: |
+        echo "pull-request #${{ steps.cpr.outputs.pull-request-number }}"
+        echo "pull-request URL ${{ steps.cpr.outputs.pull-request-url }}"
+        echo "pull-request operation [${{ steps.cpr.outputs.pull-request-operation }}]"
+        echo "pull-request SHA ${{ steps.cpr.outputs.pull-request-head-sha }}"
