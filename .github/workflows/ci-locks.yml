@@ -34,14 +34,14 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest"]
-        python-version: ["3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: "conda setup"
+    - name: "mambaforge setup (python ${{ matrix.python-version }})"
       uses: conda-incubator/setup-miniconda@v2
       with:
         miniforge-variant: Mambaforge
@@ -50,7 +50,7 @@ jobs:
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
 
-    - name: "conda install"
+    - name: "mamba install"
       run: |
         mamba install --quiet --name ${{ env.ENV_NAME }} conda-lock
 
