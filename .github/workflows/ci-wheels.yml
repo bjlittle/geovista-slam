@@ -1,0 +1,149 @@
+# Reference:
+#   - https://github.com/actions/cache
+#   - https://github.com/actions/checkout
+#   - https://github.com/actions/download-artifact
+#   - https://github.com/actions/setup-python
+#   - https://github.com/actions/upload-artifact
+#   - https://github.com/pypa/build
+#   - https://github.com/pypa/gh-action-pypi-publish
+#   - https://test.pypi.org/help/#apitoken
+
+name: ci-wheels
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+  push:
+    tags:
+      - "v*"
+    branches-ignore:
+      - "pre-commit-ci-update-config"
+      - "dependabot/*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-artifacts:
+    name: "build pypi artifacts"
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: "build sdist and wheel"
+      run: |
+        # slam is a pure python package, so simply use pypa/build
+        pipx run build
+
+    - name: "show sdist and wheel"
+      run: |
+        ls -l ${{ github.workspace }}/dist
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
+
+  test-artifacts:
+    needs: [build-artifacts]
+
+    name: "test wheel (${{ matrix.version }})"
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.version }}
+        cache: "pip"
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
+    - name: "test wheel (${{ matrix.version }})"
+      run: |
+        WHEEL=$(ls -1 dist/*.whl)
+        python -m pip install ${WHEEL}
+        python -c "import slam; print(f'slam version = {slam.__version__}')"
+
+
+  show-artifacts:
+    needs: [build-artifacts]
+    name: "show artifacts"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
+    - shell: bash
+      run: |
+        ls -l ${{ github.workspace }}/dist
+
+
+#  publish-artifacts-test-pypi:
+#    needs: [test-artifacts]
+#    name: "Publish to Test PyPI"
+#    runs-on: ubuntu-latest
+#    # upload to Test PyPI for every commit on main branch
+#    if: github.event_name == 'push' && github.event.ref == 'refs/heads/main'
+#    steps:
+#    - uses: actions/download-artifact@v3
+#      with:
+#        name: pypi-artifacts
+#        path: ${{ github.workspace }}/dist
+#
+#    - uses: pypa/gh-action-pypi-publish@release/v1
+#      with:
+#        user: __token__
+#        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+#        repository_url: https://test.pypi.org/legacy/
+#        skip_existing: true
+#        print_hash: true
+#
+#
+#  publish-artifacts-pypi:
+#    needs: [test-artifacts]
+#    name: "Publish to PyPI"
+#    runs-on: ubuntu-latest
+#    # upload to PyPI for every tag starting with 'v'
+#    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+#    steps:
+#    - uses: actions/download-artifact@v3
+#      with:
+#        name: pypi-artifacts
+#        path: ${{ github.workspace }}/dist
+#
+#    - uses: pypa/gh-action-pypi-publish@release/v1
+#      with:
+#        user: __token__
+#        password: ${{ secrets.PYPI_API_TOKEN }}
+#        print_hash: true
