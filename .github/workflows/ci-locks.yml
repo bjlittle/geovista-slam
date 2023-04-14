@@ -64,14 +64,14 @@ jobs:
     - name: "lock summary (python ${{ matrix.python-version }})"
       working-directory: ${{ github.workspace }}/requirements/locks
       run: |
-        # generate summary
-        echo "::group::Show ${{ env.LOCK_FNAME }} ..."
+        # lock summary
+        echo '::group::Show "${{ env.LOCK_FNAME }}" ...'
         cat ${{ env.LOCK_FNAME }}
         echo "::endgroup::"
-        echo "### ⚙️ ${{ env.LOCK_FNAME }} >> ${GITHUB_STEP_SUMMARY}
+        echo "### ⚙️ ${{ env.LOCK_FNAME }}" >> ${GITHUB_STEP_SUMMARY}
         echo "" >> ${GITHUB_STEP_SUMMARY}
         echo "<details>" >> ${GITHUB_STEP_SUMMARY}
-        echo "<summary> Click to expand <b>this sections ...</b></summary>" >> ${GITHUB_STEP_SUMMARY}
+        echo "<summary> Click to expand <b>this section ...</b></summary>" >> ${GITHUB_STEP_SUMMARY}
         cat ${{ env.LOCK_FNAME }} >> ${GITHUB_STEP_SUMMARY}
         echo "</details>" >> ${GITHUB_STEP_SUMMARY}
 
