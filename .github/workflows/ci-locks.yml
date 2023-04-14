@@ -57,11 +57,9 @@ jobs:
       working-directory: ${{ github.workspace }}/requirements/locks
       run: |
         LOCK_FNAME="py$(echo '${{ matrix.python-version }}' | tr -d '.')-lock-linux-64.txt"
-        echo ${LOCK_FNAME} >> ${GITHUB_ENV}
         mamba env create --name ${{ env.ENV_NAME }} --file ${{ env.ENV_FNAME }}
-        mamba info -e
-        echo ${LOCK_FNAME}
         mamba list --name ${{ env.ENV_NAME }} --explicit > ${LOCK_FNAME}
+        echo "LOCK_FNAME=${LOCK_FNAME}" >> ${GITHUB_ENV}
 
     - name: "lock resolved (python ${{ matrix.python-version }})"
       working-directory: ${{ github.workspace }}/requirements/locks
