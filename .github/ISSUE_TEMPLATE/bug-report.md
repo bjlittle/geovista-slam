@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41B Bug Report"
-about: Submit a bug report to help us improve `geovista-slam`
+about: Submit a bug report to help us improve geovista-slam
 title: ''
 labels: 'new: issue, type: bug'
 assignees: ''

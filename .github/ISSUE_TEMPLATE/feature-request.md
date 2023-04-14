@@ -1,6 +1,6 @@
 ---
 name: "✨ Feature Request"
-about: Request a new feature in `geovista-slam`
+about: Request a new feature in geovista-slam
 title: ''
 labels: 'new: feature'
 assignees: ''
