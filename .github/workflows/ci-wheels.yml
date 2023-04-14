@@ -84,7 +84,7 @@ jobs:
     - name: "configure environment"
       run: |
         PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
-        echo "LOCK_FILE=${{ github.workspace }}/requirements/locks/${PREFIX}-lock-linux-64.txt" >> ${GITHUB_ENV}
+        echo "LOCK_FILE=requirements/locks/${PREFIX}-lock-linux-64.txt" >> ${GITHUB_ENV}
 
     - name: "mambaforge setup (python ${{ matrix.python-version }})"
       uses: conda-incubator/setup-miniconda@v2
