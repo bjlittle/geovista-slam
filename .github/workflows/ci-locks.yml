@@ -28,7 +28,7 @@ jobs:
 
     env:
       ENV_NAME: "ci-locks"
-      ENV_FNAME: "requirements/geovista.yml"
+      ENV_FNAME: "${{ github.workspace }}/requirements/geovista.yml"
 
     strategy:
       fail-fast: false
