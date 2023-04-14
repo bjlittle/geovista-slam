@@ -61,17 +61,18 @@ jobs:
         mamba list --name ${{ env.ENV_NAME }} --explicit > ${LOCK_FNAME}
         echo "LOCK_FNAME=${LOCK_FNAME}" >> ${GITHUB_ENV}
 
-    - name: "lock resolved (python ${{ matrix.python-version }})"
+    - name: "lock show (python ${{ matrix.python-version }})"
       working-directory: ${{ github.workspace }}/requirements/locks
       run: |
-        echo "::group::${{ env.LOCK_FNAME }} ..."
+        # lock file summary
+        echo "::group::show ${{ env.LOCK_FNAME }} ..."
         cat ${LOCK_FNAME}
         echo "::endgroup::"
 
     - uses: actions/upload-artifact@v3
       with:
         name: lock-artifacts
-        path: ${{ github.workspace }}/requirements/locks/${LOCK_FNAME}
+        path: ${{ github.workspace }}/requirements/locks/${{ env.LOCK_FNAME }}
 
 
   create-pr:
