@@ -64,8 +64,8 @@ jobs:
     - name: "lock show (python ${{ matrix.python-version }})"
       working-directory: ${{ github.workspace }}/requirements/locks
       run: |
-        # lock file summary
-        echo "::group::show ${{ env.LOCK_FNAME }} ..."
+        
+        echo "::group::Show ${{ env.LOCK_FNAME }} ..."
         cat ${LOCK_FNAME}
         echo "::endgroup::"
 
@@ -117,7 +117,9 @@ jobs:
     - name: "show pull-request"
       if: steps.cpr.outputs.pull-request-number != ''
       run: |
-        echo "pull-request #${{ steps.cpr.outputs.pull-request-number }}"
-        echo "pull-request URL ${{ steps.cpr.outputs.pull-request-url }}"
-        echo "pull-request operation [${{ steps.cpr.outputs.pull-request-operation }}]"
-        echo "pull-request SHA ${{ steps.cpr.outputs.pull-request-head-sha }}"
+        echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
+        echo "" >> ${GITHUB_STEP_SUMMARY}
+        echo "- pull-request #${{ steps.cpr.outputs.pull-request-number }}" >> ${GITHUB_STEP_SUMMARY}
+        echo "- pull-request URL ${{ steps.cpr.outputs.pull-request-url }}" >> ${GITHUB_STEP_SUMMARY}
+        echo "- pull-request operation [${{ steps.cpr.outputs.pull-request-operation }}]" >> ${GITHUB_STEP_SUMMARY}
+        echo "- pull-request SHA ${{ steps.cpr.outputs.pull-request-head-sha }}" >> ${GITHUB_STEP_SUMMARY}
