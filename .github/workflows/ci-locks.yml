@@ -26,11 +26,14 @@ jobs:
       run:
         shell: bash -l {0}
 
+    env:
+      ENV_NAME: "ci-locks"
+
     strategy:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest"]
-        python-version: [3.11]
+        python-version: ["3.11"]
 
     steps:
     - uses: actions/checkout@v3
@@ -41,13 +44,14 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         miniforge-version: latest
+        activate-environment: ${{ env.ENV_NAME }}
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
 
     - name: "conda install"
       shell: bash
       run: |
-        conda install --quiet conda-lock
+        conda install --quiet --name ${{ env.ENV_NAME }} conda-lock
 
     - name: "conda info"
       run: |
@@ -55,10 +59,10 @@ jobs:
         conda info
         conda list
 
-    - name: "conda-lock (python ${{ matrix.python-version }})"
+    - name: "lock (python ${{ matrix.python-version }})"
       run: |
-        PY="py$(echo ${{ matrix.python-version }} | tr -d '.')"
-        conda-lock --channel conda-forge --kind explicit --file --platform linux-64 --filename-template "${PY}-lock-{platform}.txt"
+        PREFIX="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
+        conda-lock --channel conda-forge --kind explicit --file --platform linux-64 --filename-template "${PREFIX}-lock-{platform}.txt"
 
     - uses: actions/upload-artifact@v3
       with:
