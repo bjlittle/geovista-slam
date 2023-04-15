@@ -122,18 +122,18 @@ jobs:
         ls -l ${{ github.workspace }}/dist
 
 
-#  publish-artifacts-test-pypi:
-#    needs: [test-artifacts]
-#    name: "Publish to Test PyPI"
-#    runs-on: ubuntu-latest
-#    # upload to Test PyPI for every commit on main branch
-#    if: github.event_name == 'push' && github.event.ref == 'refs/heads/main'
-#    steps:
-#    - uses: actions/download-artifact@v3
-#      with:
-#        name: pypi-artifacts
-#        path: ${{ github.workspace }}/dist
-#
+  publish-artifacts-test-pypi:
+    needs: [test-artifacts]
+    name: "Publish to Test PyPI"
+    runs-on: ubuntu-latest
+    # upload to Test PyPI for every commit on main branch
+    if: github.event_name == 'push' && github.event.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
 #    - uses: pypa/gh-action-pypi-publish@release/v1
 #      with:
 #        user: __token__
