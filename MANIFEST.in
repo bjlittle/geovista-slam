@@ -5,4 +5,5 @@ exclude .gitattributes
 exclude .gitignore
 exclude .pre-commit-config.yaml
 include *.md
+include CITATION.cff
 recursive-include src *.py
