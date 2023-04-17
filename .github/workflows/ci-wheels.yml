@@ -143,20 +143,20 @@ jobs:
         print_hash: true
 
 
-#  publish-artifacts-pypi:
-#    needs: [test-artifacts]
-#    name: "Publish to PyPI"
-#    runs-on: ubuntu-latest
-#    # upload to PyPI for every tag starting with 'v'
-#    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
-#    steps:
-#    - uses: actions/download-artifact@v3
-#      with:
-#        name: pypi-artifacts
-#        path: ${{ github.workspace }}/dist
-#
-#    - uses: pypa/gh-action-pypi-publish@release/v1
-#      with:
-#        user: __token__
-#        password: ${{ secrets.PYPI_API_TOKEN }}
-#        print_hash: true
+  publish-artifacts-pypi:
+    needs: [test-artifacts]
+    name: "Publish to PyPI"
+    runs-on: ubuntu-latest
+    # upload to PyPI for every tag starting with 'v'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        print_hash: true
