@@ -213,14 +213,14 @@ https://conda.anaconda.org/conda-forge/linux-64/fonttools-4.39.3-py311h2582759_0
 https://conda.anaconda.org/conda-forge/linux-64/glew-2.1.0-h9c3ff4c_2.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/glib-2.74.1-h6239696_1.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/hdf5-1.12.2-nompi_h4df4325_101.conda
-https://conda.anaconda.org/conda-forge/noarch/importlib-metadata-6.3.0-pyha770c72_0.conda
+https://conda.anaconda.org/conda-forge/noarch/importlib-metadata-6.4.1-pyha770c72_0.conda
 https://conda.anaconda.org/conda-forge/noarch/jinja2-3.1.2-pyhd8ed1ab_1.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/libclang-15.0.7-default_had23c3d_1.conda
 https://conda.anaconda.org/conda-forge/linux-64/libva-2.18.0-h0b41bf4_0.conda
 https://conda.anaconda.org/conda-forge/noarch/nodeenv-1.7.0-pyhd8ed1ab_0.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/partd-1.4.0-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/pillow-9.2.0-py311h9461556_3.tar.bz2
-https://conda.anaconda.org/conda-forge/noarch/pip-23.0.1-pyhd8ed1ab_0.conda
+https://conda.anaconda.org/conda-forge/noarch/pip-23.1-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/proj-9.1.0-h93bde94_0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/pulseaudio-client-16.1-h5195f5e_3.conda
 https://conda.anaconda.org/conda-forge/noarch/pyct-core-0.4.6-py_0.tar.bz2
@@ -237,7 +237,7 @@ https://conda.anaconda.org/conda-forge/linux-64/ffmpeg-5.1.2-gpl_h8dda1f0_106.co
 https://conda.anaconda.org/conda-forge/linux-64/gstreamer-1.22.0-h25f0c4b_2.conda
 https://conda.anaconda.org/conda-forge/linux-64/harfbuzz-6.0.0-h8e241bc_0.conda
 https://conda.anaconda.org/conda-forge/noarch/imageio-2.27.0-pyh24c5eb1_0.conda
-https://conda.anaconda.org/conda-forge/noarch/importlib_metadata-6.3.0-hd8ed1ab_0.conda
+https://conda.anaconda.org/conda-forge/noarch/importlib_metadata-6.4.1-hd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/libnetcdf-4.8.1-nompi_h261ec11_106.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/matplotlib-base-3.7.1-py311h8597a09_0.conda
 https://conda.anaconda.org/conda-forge/noarch/platformdirs-3.2.0-pyhd8ed1ab_0.conda
