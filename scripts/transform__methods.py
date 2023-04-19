@@ -1,3 +1,4 @@
+import geovista as gv
 import iris
 from iris.coord_systems import RotatedGeogCS
 from iris.experimental.ugrid import PARSE_UGRID_ON_LOAD
@@ -31,5 +32,12 @@ plotter.add_point_labels(
     transform.halo.cell_data["slamIdsLocal"],
     always_visible=True,
 )
+plotter.add_axes()
+plotter.show()
+
+plotter = gv.GeoPlotter()
+plotter.add_mesh(transform.mesh, cmap=cmap)
+plotter.add_base_layer(texture=gv.natural_earth_hypsometric())
+plotter.add_coastlines()
 plotter.add_axes()
 plotter.show()
