@@ -26,6 +26,13 @@ repos:
     # Don't commit to main branch.
   - id: no-commit-to-branch
 
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: "v0.0.261"
+  hooks:
+  - id: ruff
+    types: [file, python]
+    args: [--fix]
+
 - repo: https://github.com/psf/black
   rev: "23.3.0"
   hooks:
@@ -39,13 +46,6 @@ repos:
   - id: codespell
     types_or: [python, markdown, rst]
     additional_dependencies: [tomli]
-
-- repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: "v0.0.261"
-  hooks:
-  - id: ruff
-    types: [file, python]
-    args: [--fix]
 
 - repo: https://github.com/aio-libs/sort-all
   rev: "v1.2.0"
