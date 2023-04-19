@@ -29,14 +29,14 @@ __all__ = ("Transform",)
 # type aliases
 CoordLike = Union[AuxCoord, DimCoord]
 PathLike = Union[str, Path]
-ShapeLike = Union[list[int], Tuple[int]]
+ShapeLike = Union[list[int], Tuple[int, ...]]
 
 CELL_IDS: str = "slamIdsGlobal"
 CELL_IDS_LOCAL: str = "slamIdsLocal"
 DEFAULT_FAST_SOLVE: bool = False
 DEFAULT_ROUNDING: bool = True
 DEFAULT_SHARE_SPATIAL: bool = False
-DEFAULT_CF_COORDINATE_SYSTEM: list[dict[str, Any], dict[str, Any]] = [
+DEFAULT_CF_COORDINATE_SYSTEM: list[dict[str, Any]] = [
     {
         "standard_name": "longitude",
         "long_name": "longitude coordinate",
