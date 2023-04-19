@@ -55,6 +55,7 @@ MDI: int = -1
 #   - trap for non-quad mesh
 #   - add developer diagnostics (warnings)
 #   - doc-strings
+#   - add tox
 #   - test coverage
 #   - restructure:
 #       - factories
