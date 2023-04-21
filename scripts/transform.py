@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Optional
 
 import iris
 from iris.coord_systems import RotatedGeogCS
@@ -20,7 +20,7 @@ def timeit(name: Optional[str] = None) -> None:
         print(f"\ntimeit = {datetime.now() - start}{msg}")
 
 
-def show(cubes: Dict[str, Cube]) -> None:
+def show(cubes: dict[str, Cube]) -> None:
     for cube in cubes.values():
         print(cube.summary(shorten=True))
 

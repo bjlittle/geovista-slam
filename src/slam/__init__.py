@@ -7,7 +7,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Tuple, Union
+from typing import Any, Union
 import warnings
 
 import geovista as gv
@@ -29,7 +29,7 @@ __all__ = ("Transform",)
 # type aliases
 CoordLike = Union[AuxCoord, DimCoord]
 PathLike = Union[str, Path]
-ShapeLike = Union[list[int], Tuple[int, ...]]
+ShapeLike = Union[list[int], tuple[int, ...]]
 
 CELL_IDS: str = "slamIdsGlobal"
 CELL_IDS_LOCAL: str = "slamIdsLocal"
