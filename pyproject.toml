@@ -125,3 +125,4 @@ where = ["src"]
 [tool.setuptools_scm]
 write_to = "src/slam/_version.py"
 local_scheme = "dirty-tag"
+version_scheme = "release-branch-semver"
