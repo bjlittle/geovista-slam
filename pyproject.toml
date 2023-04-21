@@ -24,12 +24,12 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
 ]
-description = "Structured Local Area Model"
 dependencies = [
     "appdirs",
     "geovista",
     "scitools-iris",
 ]
+description = "Structured Local Area Model"
 dynamic = [
     "readme",
     "version",
