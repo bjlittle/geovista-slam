@@ -19,9 +19,9 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
 ]
 description = "Structured Local Area Model"
@@ -50,7 +50,7 @@ keywords = [
 ]
 license = {text = "BSD-3-Clause"}
 name = "geovista-slam"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
 dev = [
@@ -68,7 +68,7 @@ Issues = "https://github.com/bjlittle/geovista-slam/issues"
 
 [tool.black]
 line-length = 88
-target-version = ["py38", "py39", "py310"]
+target-version = ["py39", "py310", "py311"]
 include = '\.pyi?$'
 
 [tool.check-manifest]
@@ -84,7 +84,7 @@ testpaths = "tests"
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py39"
 select = [
     # pyflakes
     "F",
