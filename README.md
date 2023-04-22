@@ -11,3 +11,23 @@ into structured rectilinear or curvilinear grids.
 | 📦 Package   | [![pypi](https://img.shields.io/pypi/v/geovista-slam?color=orange&label=pypi&logo=python&logoColor=white)](https://pypi.org/project/geovista-slam/) [![pypi - python version](https://img.shields.io/pypi/pyversions/geovista-slam.svg?color=orange&logo=python&label=python&logoColor=white)](https://pypi.org/project/geovista-slam/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7837322.svg)](https://doi.org/10.5281/zenodo.7837322)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | 🧰 Repo      | [![contributors](https://img.shields.io/github/contributors/bjlittle/slam)](https://github.com/bjlittle/slam/graphs/contributors)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+## [#ShowYourStripes](https://showyourstripes.info/s/globe)
+
+<h4 align="center">
+  <a href="https://showyourstripes.info/s/globe">
+    <img src="https://raw.githubusercontent.com/ed-hawkins/show-your-stripes/master/2021/GLOBE---1850-2021-MO.png"
+         height="50" width="800"
+         alt="#showyourstripes Global 1850-2021"></a>
+</h4>
+
+**Graphics and Lead Scientist**: [Ed Hawkins](http://www.met.reading.ac.uk/~ed/home/index.php), National Centre for Atmospheric Science, University of Reading.
+
+**Data**: Berkeley Earth, NOAA, UK Met Office, MeteoSwiss, DWD, SMHI, UoR, Meteo France & ZAMG.
+
+<p>
+<a href="https://showyourstripes.info/s/globe">#ShowYourStripes</a> is distributed under a
+<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+<a href="https://creativecommons.org/licenses/by/4.0/">
+  <img src="https://i.creativecommons.org/l/by/4.0/80x15.png" alt="creative-commons-by" style="border-width:0"></a>
+</p>
