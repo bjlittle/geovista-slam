@@ -12,6 +12,40 @@ into structured rectilinear or curvilinear grids.
 | 🧰 Repo      | [![contributors](https://img.shields.io/github/contributors/bjlittle/slam)](https://github.com/bjlittle/slam/graphs/contributors)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
+## Installation
+
+`geovista-slam` is available on [conda-forge](https://anaconda.org/conda-forge/geovista-slam) and [PyPI](https://pypi.org/project/geovista-slam/).
+
+We recommend using [mamba](https://github.com/mamba-org/mamba) to install `geovista-slam` 👍
+
+### conda
+
+`geovista-slam` is available on [conda-forge](https://anaconda.org/conda-forge/geovista-slam), and can be easily installed with [conda](https://docs.conda.io/projects/conda/en/latest/index.html):
+```shell
+conda install -c conda-forge geovista-slam
+```
+or alternatively with [mamba](https://github.com/mamba-org/mamba):
+```shell
+mamba install -c conda-forge geovista-slam
+```
+For more information see our [conda-forge feedstock](https://github.com/conda-forge/geovista-slam-feedstock).
+
+### pip
+
+`geovista-slam` is also available on [PyPI](https://pypi.org/project/geovista/):
+
+```shell
+pip install geovista-slam
+```
+
+However, complications may arise due to the [cartopy](https://pypi.org/project/cartopy/) package dependencies.
+
+
+## License
+
+`geovista-slam` is distributed under the terms of the [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html) license.
+
+
 ## [#ShowYourStripes](https://showyourstripes.info/s/globe)
 
 <h4 align="center">
