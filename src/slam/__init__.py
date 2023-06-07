@@ -11,7 +11,7 @@ from typing import Any, Union
 import warnings
 
 import geovista as gv
-from geovista.common import to_xy0, wrap
+from geovista.common import from_cartesian, wrap
 from geovista.crs import WGS84
 from iris.coord_systems import CoordSystem
 from iris.coords import AuxCoord, DimCoord
@@ -413,7 +413,7 @@ class Transform:
 
         if coords is None:
             face_centers = mesh.cell_centers()
-            xy0 = to_xy0(face_centers, stacked=False)
+            xy0 = from_cartesian(face_centers, stacked=False)
             face_x, face_y = xy0[0], xy0[1]
         else:
             face_x, face_y = coords.face_x.points, coords.face_y.points

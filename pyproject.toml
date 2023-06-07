@@ -25,9 +25,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Atmospheric Science",
 ]
 dependencies = [
-    "appdirs",
-    "geovista",
-    "scitools-iris",
+    "geovista>=0.2",
+    "scitools-iris>=3.2",
 ]
 description = "Structured Local Area Model"
 dynamic = [
