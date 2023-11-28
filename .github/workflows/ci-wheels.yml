@@ -89,7 +89,7 @@ jobs:
         echo "LOCK_FILE=requirements/locks/${PREFIX}-lock-linux-64.txt" >> ${GITHUB_ENV}
 
     - name: "mambaforge setup (python ${{ matrix.python-version }})"
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@v3
       with:
         miniforge-variant: Mambaforge
         miniforge-version: latest
