@@ -67,7 +67,7 @@ jobs:
         cat ${{ env.LOCK_FNAME }}
         echo "::endgroup::"
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: lock-artifacts
         path: ${{ github.workspace }}/requirements/locks/${{ env.LOCK_FNAME }}
