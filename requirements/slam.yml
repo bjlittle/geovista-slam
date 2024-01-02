@@ -12,6 +12,7 @@ dependencies:
 # core dependencies
   - geovista >=0.2
   - iris >=3.2
+  - numpy >=1.23
 
 # dev dependencies
   - pip

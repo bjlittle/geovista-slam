@@ -26,6 +26,7 @@ classifiers = [
 ]
 dependencies = [
     "geovista>=0.2",
+    "numpy>=1.23",
     "scitools-iris>=3.2",
 ]
 description = "Structured Local Area Model"
