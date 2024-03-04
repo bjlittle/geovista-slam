@@ -19,7 +19,7 @@ https://conda.anaconda.org/conda-forge/linux-64/libgomp-13.2.0-h807b86a_5.conda
 https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-2_gnu.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/fonts-conda-ecosystem-1-0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/libgcc-ng-13.2.0-h807b86a_5.conda
-https://conda.anaconda.org/conda-forge/linux-64/alsa-lib-1.2.10-hd590300_0.conda
+https://conda.anaconda.org/conda-forge/linux-64/alsa-lib-1.2.11-hd590300_1.conda
 https://conda.anaconda.org/conda-forge/linux-64/aom-3.8.1-h59595ed_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/attr-2.5.1-h166bdaf_1.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/bzip2-1.0.8-hd590300_5.conda
@@ -37,7 +37,7 @@ https://conda.anaconda.org/conda-forge/linux-64/jsoncpp-1.9.5-h4bd325d_1.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/keyutils-1.6.1-h166bdaf_0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/lame-3.100-h166bdaf_1003.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/lerc-4.0.0-h27087fc_0.tar.bz2
-https://conda.anaconda.org/conda-forge/linux-64/libabseil-20240116.1-cxx17_h59595ed_1.conda
+https://conda.anaconda.org/conda-forge/linux-64/libabseil-20240116.1-cxx17_h59595ed_2.conda
 https://conda.anaconda.org/conda-forge/linux-64/libaec-1.1.2-h59595ed_1.conda
 https://conda.anaconda.org/conda-forge/linux-64/libbrotlicommon-1.1.0-hd590300_1.conda
 https://conda.anaconda.org/conda-forge/linux-64/libdeflate-1.19-hd590300_0.conda
@@ -173,7 +173,7 @@ https://conda.anaconda.org/conda-forge/linux-64/loguru-0.7.2-py312h7900ff3_1.con
 https://conda.anaconda.org/conda-forge/linux-64/markupsafe-2.1.5-py312h98912ed_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/multidict-6.0.5-py312h98912ed_0.conda
 https://conda.anaconda.org/conda-forge/noarch/munkres-1.1.4-pyh9f0ad1d_0.tar.bz2
-https://conda.anaconda.org/conda-forge/linux-64/openjpeg-2.5.0-h488ebb8_3.conda
+https://conda.anaconda.org/conda-forge/linux-64/openjpeg-2.5.2-h488ebb8_0.conda
 https://conda.anaconda.org/conda-forge/noarch/packaging-23.2-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/noarch/param-2.0.2-pyhca7485f_0.conda
 https://conda.anaconda.org/conda-forge/noarch/platformdirs-4.2.0-pyhd8ed1ab_0.conda
@@ -223,8 +223,8 @@ https://conda.anaconda.org/conda-forge/linux-64/pillow-10.2.0-py312hf3581a9_0.co
 https://conda.anaconda.org/conda-forge/noarch/pip-24.0-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/proj-9.3.1-h1d62c97_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/pulseaudio-client-16.1-hb77b528_5.conda
-https://conda.anaconda.org/conda-forge/noarch/pytest-8.0.2-pyhd8ed1ab_0.conda
-https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.8.2-pyhd8ed1ab_0.tar.bz2
+https://conda.anaconda.org/conda-forge/noarch/pytest-8.1.0-pyhd8ed1ab_0.conda
+https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/tbb-devel-2021.11.0-h5ccd973_1.conda
 https://conda.anaconda.org/conda-forge/noarch/typing-extensions-4.10.0-hd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/noarch/urllib3-2.2.1-pyhd8ed1ab_0.conda
@@ -257,7 +257,7 @@ https://conda.anaconda.org/conda-forge/linux-64/cftime-1.6.3-py312hc7c0aa3_0.con
 https://conda.anaconda.org/conda-forge/noarch/codecov-2.1.13-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/noarch/colorspacious-1.1.2-pyh24bf2e0_0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/contourpy-1.2.0-py312h8572e83_0.conda
-https://conda.anaconda.org/conda-forge/noarch/dask-core-2024.2.0-pyhd8ed1ab_0.conda
+https://conda.anaconda.org/conda-forge/noarch/dask-core-2024.2.1-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/gst-plugins-base-1.22.9-h8e1006c_0.conda
 https://conda.anaconda.org/conda-forge/noarch/identify-2.5.35-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/libass-0.17.1-h8fe9dca_1.conda
@@ -277,7 +277,7 @@ https://conda.anaconda.org/conda-forge/linux-64/qt-main-5.15.8-h5810be5_19.conda
 https://conda.anaconda.org/conda-forge/linux-64/cartopy-0.22.0-py312hfb8ada1_1.conda
 https://conda.anaconda.org/conda-forge/noarch/cmocean-3.1.3-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/vtk-base-9.2.6-qt_py312h1234567_220.conda
-https://conda.anaconda.org/conda-forge/noarch/iris-3.7.0-pyha770c72_0.conda
+https://conda.anaconda.org/conda-forge/noarch/iris-3.8.0-pyha770c72_0.conda
 https://conda.anaconda.org/conda-forge/linux-64/vtk-io-ffmpeg-9.2.6-qt_py312h1234567_220.conda
 https://conda.anaconda.org/conda-forge/linux-64/vtk-9.2.6-qt_py312h1234567_220.conda
 https://conda.anaconda.org/conda-forge/noarch/pyvista-0.43.3-pyhd8ed1ab_0.conda
