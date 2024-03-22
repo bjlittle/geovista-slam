@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from contextlib import contextmanager
 from datetime import datetime
-from typing import Optional
 
 import iris
 from iris.coord_systems import RotatedGeogCS
@@ -12,7 +13,7 @@ import slam
 
 
 @contextmanager
-def timeit(name: Optional[str] = None) -> None:
+def timeit(name: str | None = None) -> None:
     start = datetime.now()
     try:
         yield
