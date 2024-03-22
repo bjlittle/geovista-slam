@@ -30,6 +30,8 @@ repos:
   - id: mixed-line-ending
     # Don't commit to main branch.
   - id: no-commit-to-branch
+    # Trims trailing whitespace
+  - id: trailing-whitespace
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: "v0.3.3"
