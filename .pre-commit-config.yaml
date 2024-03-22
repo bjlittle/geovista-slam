@@ -38,14 +38,9 @@ repos:
   hooks:
   - id: ruff
     types: [file, python]
-    args: [--fix]
-
-- repo: https://github.com/psf/black
-  rev: "24.3.0"
-  hooks:
-  - id: black
+    args: [--fix, --show-fixes]
+  - id: ruff-format
     types: [file, python]
-    args: [--config=./pyproject.toml]
 
 - repo: https://github.com/codespell-project/codespell
   rev: "v2.2.6"

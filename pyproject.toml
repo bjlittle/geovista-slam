@@ -66,11 +66,6 @@ test = [
 Code = "https://github.com/bjlittle/geovista-slam"
 Issues = "https://github.com/bjlittle/geovista-slam/issues"
 
-[tool.black]
-line-length = 88
-target-version = ["py39", "py310", "py311"]
-include = '\.pyi?$'
-
 [tool.check-manifest]
 ignore = [
     "src/slam/_version.py",
@@ -85,6 +80,13 @@ testpaths = "tests"
 [tool.ruff]
 line-length = 88
 target-version = "py39"
+
+[tool.ruff.format]
+docstring-code-format = true
+preview = false
+
+[tool.ruff.lint]
+preview = false
 select = [
     # pyflakes
     "F",
@@ -101,14 +103,14 @@ select = [
     "UP",
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 force-sort-within-sections = true
 known-first-party = ["slam"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 22
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [tool.setuptools]

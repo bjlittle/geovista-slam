@@ -2,7 +2,6 @@
 
 """slam setuptools packaging."""
 
-
 from setuptools import setup
 
 setup()
