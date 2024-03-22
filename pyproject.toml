@@ -71,10 +71,21 @@ ignore = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-ra -v --doctest-modules --doctest-continue-on-failure --import-mode=importlib"
-minversion = "6.0"
+addopts = [
+    "--doctest-continue-on-failure",
+    "--doctest-modules",
+    "--import-mode=importlib",
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
+    "-v",
+]
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS NUMBER"
+log_cli = "True"
+log_cli_level = "INFO"
+minversion = "6.0"
 testpaths = "tests"
+xfail_strict = "True"
 
 [tool.ruff]
 line-length = 88
