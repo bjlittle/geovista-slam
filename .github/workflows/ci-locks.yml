@@ -67,9 +67,9 @@ jobs:
         cat ${{ env.LOCK_FNAME }}
         echo "::endgroup::"
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
-        name: lock-artifacts
+        name: lock-artifacts-${{ github.job }}-${{ strategy.job-index }}
         path: ${{ github.workspace }}/requirements/locks/${{ env.LOCK_FNAME }}
 
 
@@ -82,10 +82,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
-        name: lock-artifacts
+        pattern: lock-artifacts-*
         path: ${{ github.workspace }}/requirements/locks
+        merge-multiple: true
 
     - name: "generate token"
       uses: tibdex/github-app-token@v2
