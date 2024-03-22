@@ -3,12 +3,16 @@
 
 version: 2
 updates:
-
+  # Maintain dependencies for GH actions.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every weekday
+      # Check for updates to GitHub Actions every weekday.
       interval: "daily"
+    groups:
+      actions:
+        patterns:
+          - "*"
     labels:
       - "new: pull request"
       - "bot"
