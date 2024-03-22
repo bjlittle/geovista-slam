@@ -92,7 +92,9 @@ xfail_strict = "True"
 
 [tool.ruff]
 line-length = 88
-target-version = "py39"
+src = [
+    "src",
+]
 
 [tool.ruff.format]
 docstring-code-format = true
