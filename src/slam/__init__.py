@@ -26,7 +26,7 @@ except ModuleNotFoundError:
 
 __all__ = ("Transform",)
 
-# type aliases
+# aliases for types
 CoordLike = Union[AuxCoord, DimCoord]
 PathLike = Union[str, Path]
 ShapeLike = Union[list[int], tuple[int, ...]]
