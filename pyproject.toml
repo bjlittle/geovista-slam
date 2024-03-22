@@ -106,6 +106,7 @@ select = [
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
 known-first-party = ["slam"]
+required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 22
