@@ -109,6 +109,9 @@ ignore = [
 ]
 
 [tool.ruff]
+exclude = [
+    "scripts",
+]
 line-length = 88
 src = [
     "src",
@@ -119,21 +122,38 @@ docstring-code-format = true
 preview = false
 
 [tool.ruff.lint]
+ignore = [
+    # NOTE: Non-permanent exclusions should be added to ".ruff.toml".
+
+    # flake8-annotations (ANN)
+    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+    "ANN101",  # Missing type annotation for 'self' in method.
+    "ANN102",  # Missing type annotation for 'cls' in classmethod.
+
+    # flake8-commas (COM)
+    # https://docs.astral.sh/ruff/rules/#flake8-commas-com
+    "COM812",  # Trailing comma missing.
+
+    # flake8-fixme (FIX)
+    # https://docs.astral.sh/ruff/rules/line-contains-todo/
+    "FIX002",  # Line contains TODO, consider resolving the issue.
+
+    # flake8-implicit-str-concat (ISC)
+    # https://docs.astral.sh/ruff/rules/single-line-implicit-string-concatenation/
+    # NOTE: This rule may cause conflicts when used with "ruff format".
+    "ISC001",  # Implicitly concatenate string literals on one line.
+
+    # missing-todo-link (TD003)
+    # https://docs.astral.sh/ruff/rules/missing-todo-link/
+    "TD003",  # Missing issue link on the line following this TODO.
+]
 preview = false
 select = [
-    # pyflakes
-    "F",
-    # pycodestyle
-    "E",
-    "W",
-    # flake8-bugbear
-    "B",
-    # flake8-comprehensions
-    "C4",
-    # isort
-    "I",
-    # pyupgrade
-    "UP",
+    "ALL",
+
+    # pydocstyle (D)
+    # https://docs.astral.sh/ruff/rules/multi-line-summary-first-line/
+    "D212",  # Multi-line docstring summary should start at the first line
 ]
 
 [tool.ruff.lint.isort]
@@ -146,6 +166,9 @@ max-complexity = 22
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.ruff.lint.pylint]
+max-args = 6
 
 [tool.setuptools]
 license-files = ["LICENSE"]

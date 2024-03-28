@@ -1,13 +1,11 @@
-"""
-TBD
-"""
+"""TBD."""
 
 from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, TypeAlias, Union
 import warnings
 
 import geovista as gv
@@ -17,20 +15,25 @@ from iris.coord_systems import CoordSystem
 from iris.coords import AuxCoord, DimCoord
 from iris.cube import Cube
 import numpy as np
-from pyvista import PolyData, UnstructuredGrid
 
 try:
-    from ._version import version as __version__  # noqa: F401
+    from ._version import version as __version__
 except ModuleNotFoundError:
     __version__ = "unknown"
+
+if TYPE_CHECKING:
+    from numpy.typing import ArrayLike
+    from pyvista import PolyData, UnstructuredGrid
 
 __all__ = ("Transform",)
 
 # aliases for types
-CoordLike = Union[AuxCoord, DimCoord]
-PathLike = Union[str, Path]
-ShapeLike = Union[list[int], tuple[int, ...]]
+CoordLike: TypeAlias = Union[AuxCoord, DimCoord]
+PathLike: TypeAlias = Union[str, Path]
+ShapeLike: TypeAlias = Union[list[int], tuple[int, ...]]
 
+BOUNDARY_N_CORNERS: int = 4
+BOUNDARY_STRIP: int = 3
 CELL_IDS: str = "slamIdsGlobal"
 CELL_IDS_LOCAL: str = "slamIdsLocal"
 DEFAULT_FAST_SOLVE: bool = False
@@ -51,24 +54,20 @@ DEFAULT_CF_COORDINATE_SYSTEM: list[dict[str, Any]] = [
 MDI: int = -1
 
 
-# TODO:
-#   - trap for non-quad mesh
-#   - add developer diagnostics (warnings)
-#   - doc-strings
-#   - add tox
-#   - test coverage
-#   - restructure:
-#       - factories
-#       - anything spanning mesh dimension
-#   - discover crs from mesh
-#   - load/save
-#   - enable ci services
-#   - repr/str
+# TODO @bjlittle: trap for non-quad mesh
+# TODO @bjlittle: add developer diagnostics (warnings)
+# TODO @bjlittle: doc-strings
+# TODO @bjlittle: add tox
+# TODO @bjlittle: test coverage
+# TODO @bjlittle: restructure factories and anything spanning mesh dimension
+# TODO @bjlittle: discover crs from mesh
+# TODO @bjlittle: load/save
+# TODO @bjlittle: enable ci services
+# TODO @bjlittle: repr/str
 
 
-def edge_factory() -> np.ndarray:
-    """
-    TBD
+def edge_factory() -> ArrayLike:
+    """TBD.
 
     Returns
     -------
@@ -90,28 +89,36 @@ class Coords:
 
 @dataclass
 class Edge:
-    top: np.ndarray = field(default_factory=edge_factory)
-    bottom: np.ndarray = field(default_factory=edge_factory)
-    left: np.ndarray = field(default_factory=edge_factory)
-    right: np.ndarray = field(default_factory=edge_factory)
-    generic: np.ndarray = field(default_factory=edge_factory)
+    top: ArrayLike = field(default_factory=edge_factory)
+    bottom: ArrayLike = field(default_factory=edge_factory)
+    left: ArrayLike = field(default_factory=edge_factory)
+    right: ArrayLike = field(default_factory=edge_factory)
+    generic: ArrayLike = field(default_factory=edge_factory)
 
 
 @dataclass
 class Points:
-    x: np.ndarray
-    y: np.ndarray
+    x: ArrayLike
+    y: ArrayLike
 
 
 @dataclass
 class Structure:
     coords: Coords
     edge: Edge
-    grid: np.ndarray
+    grid: ArrayLike
     mesh: PolyData
 
 
 class Transform:
+    """TBD.
+
+    Notes
+    -----
+    .. versionadded:: 0.1.0
+
+    """
+
     def __init__(
         self,
         ucube: Cube,
@@ -119,17 +126,16 @@ class Transform:
         decimals: int | None = None,
         fast_solve: bool | None = None,
         rounding: bool | None = None,
-    ):
-        """
-        TBD
+    ) -> None:
+        """TBD.
 
         Parameters
         ----------
-        ucube
-        crs
-        decimals
-        rounding
-        fast_solve
+        ucube : Cube
+        crs : CoordSystem, optional
+        decimals : int, optional
+        fast_solve : bool, optional
+        rounding : bool, optional
 
         Notes
         -----
@@ -143,8 +149,7 @@ class Transform:
         self._mesh = ucube.mesh
 
     def __call__(self, ucube: Cube, share: bool | None = None) -> Cube:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
@@ -173,12 +178,11 @@ class Transform:
 
     @staticmethod
     def _boundary_shape(edge: Edge) -> ShapeLike:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
-        edge
+        edge : Edge
 
         Returns
         -------
@@ -189,8 +193,19 @@ class Transform:
         .. versionadded:: 0.1.0
 
         """
-        assert edge.top.size == edge.bottom.size
-        assert edge.left.size == edge.right.size
+        if edge.top.size != edge.bottom.size:
+            emsg = (
+                "Boundary edge top and bottom have difference sizes, got "
+                f"{edge.top.size!r} and {edge.bottom.size!r}."
+            )
+            raise ValueError(emsg)
+
+        if edge.left.size != edge.right.size:
+            emsg = (
+                "Boundary edge left and right have different sizes, got "
+                f"{edge.left.size!r} and {edge.right.size!r}."
+            )
+            raise ValueError(emsg)
 
         if edge.top.size and edge.left.size:
             shape = (edge.left.size + 2, edge.top.size)
@@ -206,13 +221,12 @@ class Transform:
 
     @staticmethod
     def _build_coords(points: Points, crs: CoordSystem | None = None) -> Coords:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
-        points
-        crs
+        points : Points
+        crs : CoordSystem, optional
 
         Returns
         -------
@@ -224,7 +238,7 @@ class Transform:
 
         """
 
-        def build(values: np.ndarray, circular: bool | None = False) -> CoordLike:
+        def build(values: ArrayLike, *, circular: bool | None = False) -> CoordLike:
             factory = DimCoord if values.ndim == 1 else AuxCoord
             cf = (
                 DEFAULT_CF_COORDINATE_SYSTEM
@@ -239,16 +253,22 @@ class Transform:
                     del metadata["axis"]
                 metadata["coord_system"] = crs
 
+            def build_coord(
+                values: ArrayLike, base: float, kwargs: dict[str, Any]
+            ) -> CoordLike:
+                try:
+                    coord = factory(wrap(values, base=base), **kwargs)
+                except ValueError:
+                    coord = None
+                return coord
+
             if circular:
                 kwargs = cf[0]
                 for base in (-180, 0):
-                    try:
-                        coord = factory(wrap(values, base=base), **kwargs)
-                    except ValueError:
-                        pass
-                    else:
+                    coord = build_coord(values, base, kwargs)
+                    if coord is not None:
                         break
-                else:
+                if coord is None:
                     circular = False
                     factory = AuxCoord
             else:
@@ -259,14 +279,11 @@ class Transform:
 
             return coord
 
-        coords = Coords(x=build(points.x, circular=True), y=build(points.y))
-
-        return coords
+        return Coords(x=build(points.x, circular=True), y=build(points.y))
 
     @staticmethod
     def _create_mesh(ucube: Cube) -> PolyData:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
@@ -303,13 +320,12 @@ class Transform:
 
     @staticmethod
     def _extract_edges(mesh: PolyData, iteration: int | None = 0) -> Edge:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
         mesh : PolyData
-        iteration : int
+        iteration : int, optional
 
         Returns
         -------
@@ -324,8 +340,7 @@ class Transform:
         mesh.cell_data[CELL_IDS_LOCAL] = np.arange(mesh.n_cells)
 
         if mesh.n_cells == 1:
-            edge = Edge(generic=mesh.cell_data[CELL_IDS_LOCAL])
-            return edge
+            return Edge(generic=mesh.cell_data[CELL_IDS_LOCAL])
 
         edges = mesh.extract_feature_edges(
             boundary_edges=True,
@@ -337,10 +352,14 @@ class Transform:
         values, counts = np.unique(cell_ids, return_counts=True)
         (corners,) = np.where(counts > 1)
 
-        if corners.size == counts.size and counts[0] == 3 and counts[-1] == 3:
+        if (
+            corners.size == counts.size
+            and counts[0] == BOUNDARY_STRIP
+            and counts[-1] == BOUNDARY_STRIP
+        ):
             edge = Edge(generic=values)
         else:
-            if (ncorners := corners.size) != 4:
+            if (ncorners := corners.size) != BOUNDARY_N_CORNERS:
                 emsg = (
                     "Failed to extract corners of bounded region, expected 4 "
                     f"corners but found {ncorners} [iteration={iteration}]."
@@ -356,7 +375,7 @@ class Transform:
                 id2: int,
                 offset1: int | None = 0,
                 offset2: int | None = 0,
-            ) -> np.ndarray:
+            ) -> ArrayLike:
                 start = np.where(cell_ids == id1)[0][-1] + offset1
                 end = np.where(cell_ids == id2)[0][-1] + offset2
                 return cell_ids[start:end]
@@ -364,12 +383,24 @@ class Transform:
             # extract top and bottom edges (left to right)
             top = extract(*corner_values[:2])
             bottom = extract(*corner_values[2:])
-            assert top.shape == bottom.shape
+
+            if top.shape != bottom.shape:
+                emsg = (
+                    "Cannot extract boundary, top and bottom edges have difference "
+                    f"shapes, got {top.shape!r} and {bottom.shape!r}."
+                )
+                raise ValueError(emsg)
 
             # extract left and right edges (top to bottom)
             ids = extract(*corner_values[1:3], offset1=1, offset2=-1)
             left, right = ids[::2], ids[1::2]
-            assert left.shape == right.shape
+
+            if left.shape != right.shape:
+                emsg = (
+                    "Cannot extract boundary, left and right edges have different "
+                    f"shapes, got {left.shape!r} and {right.shape!r}."
+                )
+                raise ValueError(emsg)
 
             edge = Edge(top=top, bottom=bottom, left=left, right=right)
 
@@ -379,26 +410,29 @@ class Transform:
     def _extract_points(
         ucube: Cube,
         mesh: PolyData,
-        grid: np.ndarray,
+        grid: ArrayLike,
         crs: CoordSystem | None = None,
         decimals: int | None = None,
         rounding: bool | None = None,
     ) -> Points:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
-        ucube
-        mesh
-        grid
-        crs
-        decimals
-        rounding
+        ucube : Cube
+        mesh : PolyData
+        grid : ArrayLike
+        crs : CoordSystem, optional
+        decimals : int, optional
+        rounding : bool, optional
 
         Returns
         -------
         Points
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
 
         """
         if rounding is None:
@@ -460,23 +494,24 @@ class Transform:
         if is_uniform():
             grid_x, grid_y = grid_x[0], grid_y[:, 0]
 
-        points = Points(x=grid_x, y=grid_y)
-
-        return points
+        return Points(x=grid_x, y=grid_y)
 
     @staticmethod
     def _is_uniform(edge: Edge, shape: ShapeLike) -> bool:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
-        edge
-        shape
+        edge : Edge
+        shape : ShapeLike
 
         Returns
         -------
         bool
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
 
         """
         result = edge.generic.size > 0
@@ -485,7 +520,7 @@ class Transform:
             rows, cols = shape
             size = np.prod(shape)
 
-            def delta(arg: np.ndarray, step: int | None = 1) -> bool:
+            def delta(arg: ArrayLike, step: int | None = 1) -> bool:
                 udiff = np.unique(np.diff(arg))
                 return (udiff.size == 1) and (udiff[0] == step)
 
@@ -522,18 +557,17 @@ class Transform:
         cls: Transform,
         mesh: PolyData,
         edge: Edge,
-        grid: np.ndarray,
+        grid: ArrayLike,
         iteration: int | None = 0,
-    ):
-        """
-        TBD
+    ) -> None:
+        """TBD.
 
         Parameters
         ----------
-        mesh
-        edge
-        grid
-        iteration
+        mesh : PolyData
+        edge : Edge
+        grid : ArrayLike
+        iteration : int, optional
 
         Notes
         -----
@@ -543,7 +577,6 @@ class Transform:
         if edge.generic.size:
             indices = np.where(grid == MDI)
             grid[indices] = mesh.cell_data[CELL_IDS][edge.generic]
-            # print(f"{iteration=} {edge.generic.size=}")
         else:
             grows, gcols = grid.shape
 
@@ -573,7 +606,6 @@ class Transform:
 
             halo = np.concatenate([edge.top, edge.left, edge.right, edge.bottom])
             mesh = mesh.remove_cells(halo)
-            # print(f"{iteration=} {edge.top.size=}")
 
             if mesh.n_cells:
                 iteration += 1
@@ -586,16 +618,21 @@ class Transform:
         structure: Structure,
         share: bool | None = None,
     ) -> Cube:
-        """
+        """TBD.
 
         Parameters
         ----------
-        ucube
-        structure
+        ucube : Cube
+        structure : Structure
+        share : bool, optional
 
         Returns
         -------
         Cube
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
 
         """
         if share is None:
@@ -605,7 +642,7 @@ class Transform:
         slicer = [slice(None)] * (ndim := ucube.ndim)
         slicer[mesh_dim] = structure.grid
 
-        # TODO: make this a lazy operation
+        # TODO @bjlittle: make this a lazy operation
         data = ucube.data[tuple(slicer)]
 
         scube = Cube(data, **ucube.metadata._asdict())
@@ -652,8 +689,7 @@ class Transform:
                 if isinstance(coord, DimCoord)
                 else scube.add_aux_coord
             )
-            coord = coord if share else coord.copy()
-            factory(coord, dim)
+            factory(coord if share else coord.copy(), dim)
 
         return scube
 
@@ -666,8 +702,7 @@ class Transform:
         fast_solve: bool | None = None,
         rounding: bool | None = None,
     ) -> Structure:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
@@ -703,19 +738,17 @@ class Transform:
             ucube, mesh, grid, crs=crs, decimals=decimals, rounding=rounding
         )
         coords = cls._build_coords(points, crs=crs)
-        structure = Structure(coords=coords, edge=edge, grid=grid, mesh=mesh)
 
-        return structure
+        return Structure(coords=coords, edge=edge, grid=grid, mesh=mesh)
 
     @staticmethod
     def _verify(ucube: Cube, crs: CoordSystem | None = None) -> None:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
-        ucube
-        crs
+        ucube : Cube
+        crs : CoordSystem, optional
 
         Notes
         -----
@@ -729,16 +762,26 @@ class Transform:
             )
             raise ValueError(emsg)
 
-        if crs:
-            if not isinstance(crs, CoordSystem):
-                emsg = (
-                    "Expected an 'iris.coord_system.CoordSystem' instance, "
-                    f"got {type(crs)} instead."
-                )
-                raise ValueError(emsg)
+        if crs and not isinstance(crs, CoordSystem):
+            emsg = (
+                "Expected an 'iris.coord_system.CoordSystem' instance, "
+                f"got {type(crs)} instead."
+            )
+            raise ValueError(emsg)
 
     @property
     def coords(self) -> Coords:
+        """TBD.
+
+        Returns
+        -------
+        Coords
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
         return deepcopy(self._structure.coords)
 
     @classmethod
@@ -750,8 +793,7 @@ class Transform:
         fast_solve: bool | None = None,
         rounding: bool | None = None,
     ) -> Cube:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
@@ -777,11 +819,33 @@ class Transform:
         return cls._restructure(ucube, structure)
 
     @property
-    def grid(self) -> np.ndarray:
+    def grid(self) -> ArrayLike:
+        """TBD.
+
+        Returns
+        -------
+        ArrayLike
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
         return self._structure.grid.copy()
 
     @property
     def halo(self) -> UnstructuredGrid:
+        """TBD.
+
+        Returns
+        -------
+        UnstructuredGrid
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
         edge = self._structure.edge
         cells = (
             edge.generic
@@ -792,12 +856,11 @@ class Transform:
 
     @classmethod
     def load(cls: Transform, fname: PathLike) -> Transform:
-        """
-        TBD
+        """TBD.
 
         Parameters
         ----------
-        fname
+        fname : PathLike
 
         Returns
         -------
@@ -808,15 +871,42 @@ class Transform:
         .. versionadded:: 0.1.0
 
         """
-        pass
 
     @property
     def mesh(self) -> PolyData:
+        """TBD.
+
+        Returns
+        -------
+        PolyData
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
         return self._structure.mesh.copy()
 
     def save(self, fname: PathLike) -> None:
-        pass
+        """TBD.
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
 
     @property
     def shape(self) -> ShapeLike:
+        """TBD.
+
+        Returns
+        -------
+        ShapeLike
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
         return self._structure.grid.shape
