@@ -70,6 +70,9 @@ ignore = [
     "src/slam/_version.py",
 ]
 
+[tool.codespell]
+skip = "CODE_OF_CONDUCT.md"
+
 [tool.pytest.ini_options]
 addopts = [
     "--doctest-continue-on-failure",
