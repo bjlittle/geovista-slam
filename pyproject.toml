@@ -116,9 +116,6 @@ exclude = [
     "scripts",
 ]
 line-length = 88
-src = [
-    "src",
-]
 
 [tool.ruff.format]
 docstring-code-format = true
