@@ -5,7 +5,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, TypeAlias, Union
+from typing import TYPE_CHECKING, Any, TypeAlias
 import warnings
 
 import geovista as gv
@@ -28,9 +28,9 @@ if TYPE_CHECKING:
 __all__ = ("Transform",)
 
 # aliases for types
-CoordLike: TypeAlias = Union[AuxCoord, DimCoord]
-PathLike: TypeAlias = Union[str, Path]
-ShapeLike: TypeAlias = Union[list[int], tuple[int, ...]]
+CoordLike: TypeAlias = AuxCoord | DimCoord
+PathLike: TypeAlias = str | Path
+ShapeLike: TypeAlias = list[int] | tuple[int, ...]
 
 BOUNDARY_N_CORNERS: int = 4
 BOUNDARY_STRIP: int = 3
