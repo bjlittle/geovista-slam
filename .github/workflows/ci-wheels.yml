@@ -91,7 +91,7 @@ jobs:
     - name: "mambaforge setup (python ${{ matrix.python-version }})"
       uses: conda-incubator/setup-miniconda@v3
       with:
-        miniforge-variant: Mambaforge
+        miniforge-variant: Miniforge3
         miniforge-version: latest
         activate-environment: ${{ env.ENV_NAME }}
         auto-update-conda: false
