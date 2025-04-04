@@ -225,4 +225,3 @@ python = "3.12.*"
 
 [tool.pixi.feature.test.dependencies]
 pytest = ">=6.0"
-
