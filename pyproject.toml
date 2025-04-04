@@ -53,11 +53,10 @@ requires-python = ">=3.11"
 [project.optional-dependencies]
 dev = [
     "pre-commit",
+    "ruff",
 ]
 test = [
-    "codecov",
     "pytest>=6.0",
-    "pytest-cov",
 ]
 
 [project.urls]
@@ -184,3 +183,45 @@ where = ["src"]
 write_to = "src/slam/_version.py"
 local_scheme = "dirty-tag"
 version_scheme = "release-branch-semver"
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.environments]
+default = { features = [], solve-group = "default" }
+dev = { features = ["dev"], solve-group = "default" }
+test = { features = ["dev", "test"], solve-group = "default" }
+
+py311 = { features = ["py311"], solve-group = "py311" }
+dev-py311 = { features = ["dev", "py311"], solve-group = "py311" }
+test-py311 = { features = ["test", "py311"], solve-group = "py311" }
+
+py312 = { features = ["py312"], solve-group = "py312" }
+dev-py312 = { features = ["dev", "py312"], solve-group = "py312" }
+test-py312 = { features = ["test", "py312"], solve-group = "py312" }
+
+[tool.pixi.dependencies]
+geovista = ">=0.2"
+numpy = ">=1.23"
+iris = ">=3.2"
+
+[tool.pixi.feature.dev.dependencies]
+pre-commit = ">=4.2.0,<5"
+ruff = ">=0.11.2,<0.12"
+
+[tool.pixi.feature.dev.pypi-dependencies]
+geovista-slam = { path = ".", editable = true }
+
+[tool.pixi.feature.dev.tasks]
+fmt = "ruff format"
+lint = "ruff check"
+
+[tool.pixi.feature.py311.dependencies]
+python = "3.11.*"
+
+[tool.pixi.feature.py312.dependencies]
+python = "3.12.*"
+
+[tool.pixi.feature.test.dependencies]
+pytest = ">=6.0"

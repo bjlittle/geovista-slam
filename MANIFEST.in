@@ -4,6 +4,7 @@ exclude .git_archival.txt
 exclude .gitattributes
 exclude .gitignore
 exclude .pre-commit-config.yaml
+exclude pixi.lock
 include *.md
 include CITATION.cff
 recursive-include src *.py
