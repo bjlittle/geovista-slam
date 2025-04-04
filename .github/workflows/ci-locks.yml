@@ -1,9 +1,8 @@
 # Reference:
-#   - https://github.com/actions/cache
 #   - https://github.com/actions/checkout
-#   - https://github.com/actions/download-artifact
-#   - https://github.com/actions/upload-artifact
-#   - https://github.com/conda-incubator/setup-miniconda
+#   - https://github.com/prefix-dev/setup-pixi
+#   - https://github.com/pavelzw/pixi-diff-to-markdown
+#   - https://github.com/peter-evans/create-pull-request
 
 name: ci-locks
 
@@ -16,110 +15,60 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash -l {0}
+
+env:
+  SHELLOPTS: "errexit:pipefail"
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  build-locks:
-    name: "lock (python ${{ matrix.python-version }})"
-
+  locks-update:
+    name: "update lockfiles"
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash -l {0}
-
-    env:
-      ENV_NAME: "ci-locks"
-      ENV_FNAME: "${{ github.workspace }}/requirements/slam.yml"
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ["ubuntu-latest"]
-        python-version: ["3.11", "3.12"]
-
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: "mambaforge setup (python ${{ matrix.python-version }})"
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        miniforge-variant: Miniforge3
-        miniforge-version: latest
-        channels: conda-forge
-        channel-priority: true
-        auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
+      - name: "setup pixi"
+        uses: prefix-dev/setup-pixi@v0.8.3
+        with:
+          run-install: false
 
-    - name: "lock generate (python ${{ matrix.python-version }})"
-      working-directory: ${{ github.workspace }}/requirements/locks
-      run: |
-        LOCK_FNAME="py$(echo '${{ matrix.python-version }}' | tr -d '.')-lock-linux-64.txt"
-        mamba env create --name ${{ env.ENV_NAME }} --file ${{ env.ENV_FNAME }}
-        mamba list --name ${{ env.ENV_NAME }} --explicit > ${LOCK_FNAME}
-        echo "LOCK_FNAME=${LOCK_FNAME}" >> ${GITHUB_ENV}
+      - name: "refresh lockfiles"
+        run: |
+          pixi update --json | pixi exec pixi-diff-to-markdown >> diff.md
 
-    - name: "lock summary (python ${{ matrix.python-version }})"
-      working-directory: ${{ github.workspace }}/requirements/locks
-      run: |
-        # lock summary
-        echo '::group::Show "${{ env.LOCK_FNAME }}" ...'
-        cat ${{ env.LOCK_FNAME }}
-        echo "::endgroup::"
+      - name: "create pull-request"
+        id: cpr
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: ${{ github.workspace }}/pixi.lock
+          commit-message: "updated lockfiles"
+          branch: pixi-update
+          base: main
+          delete-branch: true
+          title: "[geovista.ci] pixi update lockfiles"
+          body-path: ${{ github.workspace }}/diff.md
+          labels: |
+            new: pull request
+            bot
+            pixi
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: lock-artifacts-${{ github.job }}-${{ strategy.job-index }}
-        path: ${{ github.workspace }}/requirements/locks/${{ env.LOCK_FNAME }}
-
-
-  create-pr:
-    needs: build-locks
-    name: "create pull-request"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - uses: actions/download-artifact@v4
-      with:
-        pattern: lock-artifacts-*
-        path: ${{ github.workspace }}/requirements/locks
-        merge-multiple: true
-
-    - name: "generate token"
-      uses: tibdex/github-app-token@v2
-      id: generate-token
-      with:
-        app_id: ${{ secrets.AUTH_APP_ID }}
-        private_key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
-
-    - name: "generate pull-request"
-      id: cpr
-      uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
-      with:
-        token: ${{ steps.generate-token.outputs.token }}
-        add-paths: ${{ github.workspace }}/requirements/locks/*.txt
-        commit-message: "updated conda lock files"
-        branch: conda-lock-auto-update
-        delete-branch: true
-        title: "[geovista.ci] conda lock auto-update"
-        body: |
-          🤖 Bleep! Bloop!
-
-          Conda lock files for `linux-64` auto-updated to latest resolved environment of `geovista-slam` dependencies.
-        labels: |
-          new: pull request
-          bot
-
-    - name: "show pull-request"
-      if: steps.cpr.outputs.pull-request-number != ''
-      run: |
-        echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
-        echo "" >> ${GITHUB_STEP_SUMMARY}
-        echo "The following locks pull-request has been auto-generated:"
-        echo "- **PR** #${{ steps.cpr.outputs.pull-request-number }}" >> ${GITHUB_STEP_SUMMARY}
-        echo "- **URL** ${{ steps.cpr.outputs.pull-request-url }}" >> ${GITHUB_STEP_SUMMARY}
-        echo "- **Operation** [${{ steps.cpr.outputs.pull-request-operation }}]" >> ${GITHUB_STEP_SUMMARY}
-        echo "- **SHA** ${{ steps.cpr.outputs.pull-request-head-sha }}" >> ${GITHUB_STEP_SUMMARY}
+      - name: "show pull-request"
+        if: steps.cpr.outputs.pull-request-number != ''
+        run: |
+          echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
+          echo "" >> ${GITHUB_STEP_SUMMARY}
+          echo "The following locks pull-request has been auto-generated:"
+          echo "- **PR** #${{ steps.cpr.outputs.pull-request-number }}" >> ${GITHUB_STEP_SUMMARY}
+          echo "- **URL** ${{ steps.cpr.outputs.pull-request-url }}" >> ${GITHUB_STEP_SUMMARY}
+          echo "- **Operation** [${{ steps.cpr.outputs.pull-request-operation }}]" >> ${GITHUB_STEP_SUMMARY}
+          echo "- **SHA** ${{ steps.cpr.outputs.pull-request-head-sha }}" >> ${GITHUB_STEP_SUMMARY}
