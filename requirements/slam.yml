@@ -6,8 +6,8 @@ channels:
 dependencies:
 
 # setup dependencies
-  - setuptools >=61
-  - setuptools-scm >=7
+  - setuptools >=64
+  - setuptools-scm >=8
 
 # core dependencies
   - geovista >=0.2
