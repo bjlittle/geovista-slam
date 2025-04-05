@@ -43,29 +43,13 @@ jobs:
 
       - name: "refresh lockfiles"
         run: |
-          pixi update --json | pixi exec pixi-diff-to-markdown >> diff.md
-          echo ">>>>>"
-          cat diff.md
-          echo "<<<<<"
-          echo ${{ hashFiles('pixi.lock') }}
-          echo "-----"
-          echo "[${{ hashFiles('diff.md') != '' }}]"
-          echo "[${{ hashFiles('pixi.lock') != '' }}]"
+          pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
+          [ ! -s diff.md ] && rm -f diff.md
           ls -l
-
-      - name: 'Check File Existence'
-        id: diff
-        uses: thebinaryfelix/check-file-existence-action@436223737a098725b8d10ab1950a03efba5e6fc6
-        with:
-          files: 'diff.md'
-
-      - if: steps.diff.outputs.exists == 'false'
-        run: |
-          echo "diff.md doesn not exist"
 
       - name: "create pull-request"
         id: cpr
-        if: steps.diff.outputs.exists == 'true'
+        if: ${{ hashFiles('diff.md') != '' }}
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
