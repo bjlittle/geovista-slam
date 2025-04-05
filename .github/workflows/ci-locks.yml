@@ -49,9 +49,10 @@ jobs:
           echo "<<<<<"
           echo ${{ hashFiles('pixi.lock') }}
           echo "-----"
+          echo "[${{ hashFiles('diff.md') }}]"
 
       - name: "create pull-request"
-        if: ${{ hashFiles('pixi.lock') == '' }}
+        if: hashFiles('diff.md') == ''
         id: cpr
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
