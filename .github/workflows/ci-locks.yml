@@ -47,6 +47,8 @@ jobs:
           echo ">>>>>"
           cat diff.md
           echo "<<<<<"
+          echo ${{ hashFiles('diff.md') }}
+          echo "-----"
 
       - name: "create pull-request"
         id: cpr
