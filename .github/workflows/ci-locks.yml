@@ -44,15 +44,11 @@ jobs:
       - name: "refresh lockfiles"
         run: |
           pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
-          [ ! -s diff.md ] && rm -f diff.md
-          ls -l
-          echo ">>>>>"
-          hexdump -C diff.md
-          echo "<<<<<"
+          [ $( wc -c < diff.md) -lt 10 ] && rm -f diff.md
 
       - name: "create pull-request"
         id: cpr
-        if: ${{ hashFiles('diff.md') != '' }}
+        if: ${{ hashFiles('diff.md') }}
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
