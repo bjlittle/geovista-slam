@@ -43,7 +43,7 @@ jobs:
 
       - name: "refresh lockfiles"
         run: |
-          pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
+          pixi update --no-install --json | pixi exec pixi-diff-to-markdown > diff.md
           [ ! -s diff.md ] && rm -f diff.md
           ls -l
 
