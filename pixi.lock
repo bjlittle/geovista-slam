@@ -3576,7 +3576,7 @@ packages:
   license: Apache-2.0
   license_family: APACHE
   purls:
-  - pkg:pypi/frozenlist?source=hash-mapping
+  - pkg:pypi/frozenlist?source=compressed-mapping
   size: 60939
   timestamp: 1737645356438
 - conda: https://conda.anaconda.org/conda-forge/noarch/fsspec-2025.3.2-pyhd8ed1ab_0.conda
@@ -3641,7 +3641,7 @@ packages:
   timestamp: 1735513616804
 - pypi: .
   name: geovista-slam
-  version: 0.2.0.dev239
+  version: 0.2.0.dev246
   sha256: e21e9df1fe246f656f6b342fba01de14ad8efc9471522a89f03d05fbb1f52953
   requires_dist:
   - geovista>=0.2
@@ -3855,7 +3855,7 @@ packages:
   license: Apache-2.0
   license_family: APACHE
   purls:
-  - pkg:pypi/importlib-metadata?source=hash-mapping
+  - pkg:pypi/importlib-metadata?source=compressed-mapping
   size: 29141
   timestamp: 1737420302391
 - conda: https://conda.anaconda.org/conda-forge/noarch/iniconfig-2.0.0-pyhd8ed1ab_1.conda
@@ -5458,6 +5458,7 @@ packages:
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
   license: Apache-2.0
+  license_family: APACHE
   purls:
   - pkg:pypi/multidict?source=hash-mapping
   size: 87572
@@ -5471,6 +5472,7 @@ packages:
   - python >=3.12,<3.13.0a0
   - python_abi 3.12.* *_cp312
   license: Apache-2.0
+  license_family: APACHE
   purls:
   - pkg:pypi/multidict?source=compressed-mapping
   size: 88495
@@ -6008,7 +6010,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/pyparsing?source=hash-mapping
+  - pkg:pypi/pyparsing?source=compressed-mapping
   size: 95988
   timestamp: 1743089832359
 - conda: https://conda.anaconda.org/conda-forge/linux-64/pyproj-3.7.1-py311h0f98d5a_0.conda
@@ -6631,6 +6633,7 @@ packages:
   depends:
   - typing_extensions ==4.13.1 pyh29332c3_0
   license: PSF-2.0
+  license_family: PSF
   purls: []
   size: 89685
   timestamp: 1743820059977
@@ -6641,6 +6644,7 @@ packages:
   - python >=3.9
   - python
   license: PSF-2.0
+  license_family: PSF
   purls:
   - pkg:pypi/typing-extensions?source=compressed-mapping
   size: 52170
