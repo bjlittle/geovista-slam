@@ -52,9 +52,19 @@ jobs:
           echo "[${{ hashFiles('diff.md') != '' }}]"
           echo "[${{ hashFiles('pixi.lock') != '' }}]"
 
+      - name: 'Check File Existence'
+        id: diff
+        uses: thebinaryfelix/check-file-existence-action@436223737a098725b8d10ab1950a03efba5e6fc6
+        with:
+          files: 'diff.md'
+
+      - if: steps.diff.outputs.exists == 'false'
+        run: |
+          echo "diff.md doesn not exist"
+
       - name: "create pull-request"
-        if: ${{ hashFiles('diff.md') != '' }}
         id: cpr
+        if: steps.diff.outputs.exists == 'true'
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +81,7 @@ jobs:
             pixi
 
       - name: "show pull-request"
-        if: ${{ hashFiles('diff.md') != '' }} && steps.cpr.outputs.pull-request-number != ''
+        if: steps.diff.outputs.exists == 'true' && steps.cpr.outputs.pull-request-number != ''
         run: |
           echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
           echo "" >> ${GITHUB_STEP_SUMMARY}
