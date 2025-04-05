@@ -51,6 +51,7 @@ jobs:
           echo "-----"
           echo "[${{ hashFiles('diff.md') != '' }}]"
           echo "[${{ hashFiles('pixi.lock') != '' }}]"
+          ls -l
 
       - name: 'Check File Existence'
         id: diff
