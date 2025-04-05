@@ -55,7 +55,7 @@ jobs:
           branch: pixi-update
           base: main
           delete-branch: true
-          title: "[geovista.ci] pixi update lockfiles"
+          title: "chore: pixi update lockfiles"
           body-path: ${{ github.workspace }}/diff.md
           labels: |
             new: pull request
