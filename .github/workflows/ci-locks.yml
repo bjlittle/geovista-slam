@@ -47,6 +47,7 @@ jobs:
 
       - name: "create pull-request"
         id: cpr
+        if: ${{ hashFiles('diff.md') != '' }}
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -63,7 +64,7 @@ jobs:
             pixi
 
       - name: "show pull-request"
-        if: steps.cpr.outputs.pull-request-number != ''
+        if: ${{ hashFiles('diff.md') != '' }} && steps.cpr.outputs.pull-request-number != ''
         run: |
           echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
           echo "" >> ${GITHUB_STEP_SUMMARY}
