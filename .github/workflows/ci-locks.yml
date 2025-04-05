@@ -43,9 +43,12 @@ jobs:
 
       - name: "refresh lockfiles"
         run: |
-          pixi update --no-install --json | pixi exec pixi-diff-to-markdown > diff.md
+          pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
           [ ! -s diff.md ] && rm -f diff.md
           ls -l
+          echo ">>>>>"
+          hexdump -C diff.md
+          echo "<<<<<"
 
       - name: "create pull-request"
         id: cpr
