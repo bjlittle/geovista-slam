@@ -60,12 +60,12 @@ jobs:
           title: "chore: pixi update lockfiles"
           body-path: ${{ github.workspace }}/diff.md
           labels: |
-            new: pull request
             bot
+            new: pull request
             pixi
 
       - name: "show pull-request"
-        if: steps.diff.outputs.exists == 'true' && steps.cpr.outputs.pull-request-number != ''
+        if: ${{ hashFiles('diff.md') }}
         run: |
           echo "### :rocket: Pull-Request Summary" >> ${GITHUB_STEP_SUMMARY}
           echo "" >> ${GITHUB_STEP_SUMMARY}
