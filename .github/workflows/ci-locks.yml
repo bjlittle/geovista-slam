@@ -49,7 +49,7 @@ jobs:
           echo "<<<<<"
           echo ${{ hashFiles('pixi.lock') }}
           echo "-----"
-          echo "[${{ hashFiles('diff.md') }}]"
+          echo "[${{ hashFiles('diff.md') }} == '']"
 
       - name: "create pull-request"
         if: hashFiles('diff.md') == ''
