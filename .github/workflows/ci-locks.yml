@@ -47,7 +47,7 @@ jobs:
           echo ">>>>>"
           cat diff.md
           echo "<<<<<"
-          echo ${{ hashFiles('diff.md') }}
+          echo ${{ hashFiles('pixi.lock') }}
           echo "-----"
 
       - name: "create pull-request"
