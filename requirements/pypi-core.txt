@@ -1,0 +1,3 @@
+geovista >=0.2
+numpy >=1.25
+scitools-iris >=3.2
