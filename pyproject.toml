@@ -22,13 +22,10 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
 ]
-dependencies = [
-    "geovista>=0.2",
-    "numpy>=1.23",
-    "scitools-iris>=3.2",
-]
 description = "Structured Local Area Model"
 dynamic = [
+    "dependencies",
+    "optional-dependencies",
     "readme",
     "version",
 ]
@@ -49,15 +46,6 @@ keywords = [
 license = {text = "BSD-3-Clause"}
 name = "geovista-slam"
 requires-python = ">=3.11"
-
-[project.optional-dependencies]
-dev = [
-    "pre-commit",
-    "ruff",
-]
-test = [
-    "pytest>=6.0",
-]
 
 [project.urls]
 Code = "https://github.com/bjlittle/geovista-slam"
@@ -173,7 +161,12 @@ license-files = ["LICENSE"]
 zip-safe = false
 
 [tool.setuptools.dynamic]
+dependencies = { file = ["requirements/pypi-core.txt"] }
 readme = {file = "README.md", content-type = "text/markdown"}
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["requirements/pypi-dev.txt"] }
+test = { file = ["requirements/pypi-test.txt"] }
 
 [tool.setuptools.packages.find]
 include = ["slam*"]
