@@ -47,7 +47,7 @@ jobs:
           ls -l
           echo "$(wc -c < diff.md)"
           echo "[${{ hashFiles('diff.md') }}]"
-          if [ $(wc -c < diff.md) -lt 10 ]
+          if [ $(wc -c < diff.md) -lt 827 ]
           then
               echo "yes"
           else
