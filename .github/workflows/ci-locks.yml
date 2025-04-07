@@ -43,7 +43,7 @@ jobs:
 
       - name: "refresh lockfiles"
         run: |
-          pixi update --verbose --json | pixi exec pixi-diff-to-markdown > diff.md
+          pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
           if [ $(wc -c < diff.md) -lt 10 ]; then
               rm -f diff.md
           fi
