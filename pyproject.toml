@@ -196,12 +196,12 @@ test-py312 = { features = ["test", "py312"], solve-group = "py312" }
 
 [tool.pixi.dependencies]
 geovista = ">=0.2"
-numpy = ">=1.23"
+numpy = ">=1.25"
 iris = ">=3.2"
 
 [tool.pixi.feature.dev.dependencies]
-pre-commit = ">=4.2.0,<5"
-ruff = ">=0.11.2,<0.12"
+pre-commit = "*"
+ruff = "*"
 
 [tool.pixi.feature.dev.pypi-dependencies]
 geovista-slam = { path = ".", editable = true }
@@ -210,11 +210,11 @@ geovista-slam = { path = ".", editable = true }
 fmt = "ruff format"
 lint = "ruff check"
 
+[tool.pixi.feature.test.dependencies]
+pytest = ">=6.0"
+
 [tool.pixi.feature.py311.dependencies]
 python = "3.11.*"
 
 [tool.pixi.feature.py312.dependencies]
 python = "3.12.*"
-
-[tool.pixi.feature.test.dependencies]
-pytest = ">=6.0"
