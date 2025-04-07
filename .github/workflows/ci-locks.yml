@@ -45,10 +45,13 @@ jobs:
         run: |
           pixi update --verbose --json | pixi exec pixi-diff-to-markdown > diff.md
           ls -l
-          echo "$( wc -c < diff.md)"
+          echo "$(wc -c < diff.md)"
           echo "[${{ hashFiles('diff.md') }}]"
-          if [ $( wc -c < diff.md) -lt 10 ]; then
-              echo "**********"
+          if [ $(wc -c < diff.md) -lt 10 ]
+          then
+              echo "yes"
+          else
+              echo "no"
           fi
           echo "[${{ hashFiles('diff.md') }}]"
           [ $( wc -c < diff.md) -lt 10 ] && rm -f diff.md
