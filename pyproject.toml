@@ -215,6 +215,8 @@ pytest = ">=6.0"
 
 [tool.pixi.feature.py311.dependencies]
 python = "3.11.*"
+pip = "*"
 
 [tool.pixi.feature.py312.dependencies]
 python = "3.12.*"
+pip = "*"
