@@ -1,2 +1,2 @@
-pre-commit
-ruff
+pre-commit <4.2.1
+ruff <0.11.5
