@@ -188,11 +188,11 @@ test = { features = ["dev", "test"], solve-group = "default" }
 
 py311 = { features = ["py311"], solve-group = "py311" }
 dev-py311 = { features = ["dev", "py311"], solve-group = "py311" }
-test-py311 = { features = ["test", "py311"], solve-group = "py311" }
+test-py311 = { features = ["test", "dev", "py311"], solve-group = "py311" }
 
 py312 = { features = ["py312"], solve-group = "py312" }
 dev-py312 = { features = ["dev", "py312"], solve-group = "py312" }
-test-py312 = { features = ["test", "py312"], solve-group = "py312" }
+test-py312 = { features = ["test", "dev", "py312"], solve-group = "py312" }
 
 [tool.pixi.dependencies]
 geovista = ">=0.2"
