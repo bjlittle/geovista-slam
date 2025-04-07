@@ -77,14 +77,14 @@ jobs:
 
     - name: "configure environment"
       run: |
-        NAME="py$(echo '${{ matrix.python-version }}' | tr -d '.')"
+        echo "NAME=py$(echo ${{ matrix.python-version }} | tr -d '.')" >> ${GITHUB_ENV}
 
     - name: "setup pixi"
       uses: prefix-dev/setup-pixi@8eaba7c61d661f73d558b0b477156b7b62667fa4
       with:
         environments: ${{ env.NAME }}
-        activate-environment: ${{ env.NAME }}
         frozen: true
+        activate-environment: true
 
     - uses: actions/download-artifact@v4
       with:
