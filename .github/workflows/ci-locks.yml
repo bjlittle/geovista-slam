@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0
 
       - name: "setup pixi"
-        uses: prefix-dev/setup-pixi@v0.8.4
+        uses: prefix-dev/setup-pixi@8eaba7c61d661f73d558b0b477156b7b62667fa4
         with:
           run-install: false
 
