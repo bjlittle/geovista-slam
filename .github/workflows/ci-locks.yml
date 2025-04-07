@@ -46,7 +46,7 @@ jobs:
           pixi update --verbose --json | pixi exec pixi-diff-to-markdown > diff.md
           ls -l
           echo "$( wc -c < diff.md)"
-          [ $( wc -c < diff.md) -lt 10 ] && echo "**********"
+          [[ $( wc -c < diff.md) -lt 10 ]] && echo "**********"
           [ $( wc -c < diff.md) -lt 10 ] && rm -f diff.md
 
       - name: "create pull-request"
