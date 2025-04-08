@@ -1,24 +1,19 @@
-name: slam-dev
-
+name: slam-py312
 channels:
-  - conda-forge
-
+- conda-forge
+- nodefaults
 dependencies:
-
-# setup dependencies
-  - setuptools >=64
-  - setuptools-scm >=8
-
-# core dependencies
-  - geovista >=0.2
-  - iris >=3.2
-  - numpy >=1.23
-
-# dev dependencies
-  - pip
-  - pre-commit
-
-# test dependencies
-  - codecov
-  - pytest >=6.0
-  - pytest-cov
+- pytest >=6.0
+- pre-commit *
+- ruff *
+- python 3.12.*
+- python >=3.11
+- pip *
+- geovista >=0.2
+- iris >=3.2
+- numpy >=1.25
+- setuptools >=64
+- setuptools-scm >=8
+- pip
+- pip:
+  - -e .
