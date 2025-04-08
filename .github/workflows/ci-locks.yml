@@ -7,9 +7,10 @@
 name: ci-locks
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: "3 0 * * 1"
+
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,6 +18,11 @@ concurrency:
 
 env:
   SHELLOPTS: "errexit:pipefail"
+  NAME: "slam-py312"
+
+defaults:
+  run:
+    shell: bash -l {0}
 
 permissions:
   contents: write
@@ -26,10 +32,6 @@ jobs:
   locks-update:
     name: "update lockfiles"
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash -l {0}
 
     steps:
       - uses: actions/checkout@v4
@@ -41,12 +43,18 @@ jobs:
         with:
           run-install: false
 
-      - name: "refresh lockfiles"
+      - name: "refresh pixi"
         run: |
           pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
           if [ $(wc -c < diff.md) -lt 10 ]; then
               rm -f diff.md
           fi
+
+      - name: "refresh conda"
+        if: ${{ hashFiles('diff.md') }}
+        run: |
+          pixi workspace export conda-explicit-spec --environment ${{ env.NAME }} --frozen --ignore-pypi-errors requirements
+          pixi workspace export conda-environment --environment ${{ env.NAME }} requirements/slam.yml
 
       - name: "create pull-request"
         id: cpr
@@ -54,9 +62,12 @@ jobs:
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          add-paths: ${{ github.workspace }}/pixi.lock
+          add-paths: |
+            ${{ github.workspace }}/pixi.lock
+            ${{ github.workspace }}/requirements/slam*.txt
+            ${{ github.workspace }}/requirements/slam*.yml
           commit-message: "updated lockfiles"
-          branch: pixi-update
+          branch: pixi-auto-update
           base: main
           delete-branch: true
           title: "chore: pixi update lockfiles"
