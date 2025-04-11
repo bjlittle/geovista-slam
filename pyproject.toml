@@ -179,7 +179,7 @@ version_scheme = "release-branch-semver"
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["linux-64"]
+platforms = ["linux-64", "osx-64"]
 
 [tool.pixi.environments]
 default = { features = [], solve-group = "default" }
