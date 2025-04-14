@@ -43,7 +43,7 @@ https://conda.anaconda.org/conda-forge/noarch/cfgv-3.3.1-pyhd8ed1ab_1.conda#57df
 https://conda.anaconda.org/conda-forge/noarch/pre-commit-4.2.0-pyha770c72_0.conda#17e487cc8b5507cd3abc09398cf27949
 https://conda.anaconda.org/conda-forge/noarch/wheel-0.45.1-pyhd8ed1ab_1.conda#75cb7132eb58d97896e173ef12ac9986
 https://conda.anaconda.org/conda-forge/noarch/pip-25.0.1-pyh8b19718_0.conda#79b5c1440aedc5010f687048d9103628
-https://conda.anaconda.org/conda-forge/osx-64/llvm-openmp-20.1.2-ha54dae1_0.conda#86e822e810ac7658cbed920d548f8398
+https://conda.anaconda.org/conda-forge/osx-64/llvm-openmp-20.1.2-ha54dae1_1.conda#0919db81cb42375dd9f2ab1ec032af94
 https://conda.anaconda.org/conda-forge/osx-64/libgfortran5-14.2.0-h58528f3_105.conda#94560312ff3c78225bed62ab59854c31
 https://conda.anaconda.org/conda-forge/osx-64/libgfortran-14.2.0-hef36b68_105.conda#6b27baf030f5d6603713c7e72d3f6b9a
 https://conda.anaconda.org/conda-forge/osx-64/libopenblas-0.3.29-openmp_hbf64a52_0.conda#a30dc52b2a8b6300f17eaabd2f940d41
@@ -130,7 +130,7 @@ https://conda.anaconda.org/conda-forge/noarch/pyshp-2.3.1-pyhd8ed1ab_1.conda#856
 https://conda.anaconda.org/conda-forge/osx-64/cartopy-0.24.0-py312h98e817e_0.conda#75179ab8de580fb4f0eed661119c4680
 https://conda.anaconda.org/conda-forge/noarch/iris-3.12.0-pyha770c72_0.conda#f6551d52c552616493ff211ddfa01ade
 https://conda.anaconda.org/conda-forge/osx-64/msgpack-python-1.1.0-py312hc5c4d5f_0.conda#3448a4ca65790764c2f8d44d5f917f84
-https://conda.anaconda.org/conda-forge/osx-64/propcache-0.2.1-py312h3520af0_1.conda#e712bcabf1db361f1350b638be66caca
+https://conda.anaconda.org/conda-forge/osx-64/propcache-0.3.1-py312h3520af0_0.conda#9e58210edacc700e43c515206904f0ca
 https://conda.anaconda.org/conda-forge/osx-64/multidict-6.3.2-py312h6f3313d_0.conda#2fa3a08e600156ab6f794b0f115ec114
 https://conda.anaconda.org/conda-forge/noarch/idna-3.10-pyhd8ed1ab_1.conda#39a4f67be3286c86d696df570b1201b7
 https://conda.anaconda.org/conda-forge/osx-64/yarl-1.18.3-py312h3520af0_1.conda#c9c69a722e1cb1250608ed6c58bd2215
@@ -170,7 +170,7 @@ https://conda.anaconda.org/conda-forge/osx-64/harfbuzz-11.0.1-h97d4977_0.conda#8
 https://conda.anaconda.org/conda-forge/osx-64/double-conversion-3.3.1-h240833e_0.conda#3cb499563390702fe854a743e376d711
 https://conda.anaconda.org/conda-forge/osx-64/qt6-main-6.8.3-h69ed9f3_2.conda#0a2d60fd2c5de9329d51e587407ac4ae
 https://conda.anaconda.org/conda-forge/osx-64/pugixml-1.14-he965462_0.conda#92f9416f48c010bf04c34c9841c84b09
-https://conda.anaconda.org/conda-forge/osx-64/nlohmann_json-3.11.3-hf036a51_1.conda#00c3efa95b3a010ee85bc36aac6ab2f6
+https://conda.anaconda.org/conda-forge/osx-64/nlohmann_json-3.12.0-h92383a6_0.conda#9334c0f8d63ac55ff03e3b9cef9e371c
 https://conda.anaconda.org/conda-forge/osx-64/loguru-0.7.2-py312hb401068_2.conda#782d363c536ff818265a294b68f67127
 https://conda.anaconda.org/conda-forge/osx-64/libogg-1.3.5-hfdf4475_0.conda#7497372c91a31d3e8d64ce3f1a9632e8
 https://conda.anaconda.org/conda-forge/osx-64/libvorbis-1.3.7-h046ec9c_0.tar.bz2#fbbda1fede0aadaa252f6919148c4ce1
