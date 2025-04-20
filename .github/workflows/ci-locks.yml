@@ -45,6 +45,7 @@ jobs:
 
       - name: "refresh pixi"
         run: |
+          pixi clean cache --exec
           pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
           if [ $(wc -c < diff.md) -lt 10 ]; then
               rm -f diff.md
