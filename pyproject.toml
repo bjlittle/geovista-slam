@@ -186,7 +186,7 @@ default = { features = [], solve-group = "default" }
 dev = { features = ["dev"], solve-group = "default" }
 test = { features = ["test", "dev"], solve-group = "default" }
 slam = { features = ["test", "dev"], solve-group = "default" }
-ci = { features = ["ci"], no-default-feature = true }
+lock = { features = ["lock"], no-default-feature = true }
 
 py311 = { features = ["py311"], solve-group = "py311" }
 dev-py311 = { features = ["dev", "py311"], solve-group = "py311" }
@@ -205,10 +205,6 @@ numpy = ">=1.25"
 setuptools = ">=64"
 setuptools-scm = ">=8"
 
-[tool.pixi.feature.ci.dependencies]
-pixi-diff-to-markdown = "*"
-pydantic-settings = "<2.9.0"
-
 [tool.pixi.feature.dev.dependencies]
 pre-commit = "*"
 ruff = "*"
@@ -219,6 +215,10 @@ geovista-slam = { path = ".", editable = true }
 [tool.pixi.feature.dev.tasks]
 fmt = "ruff format"
 lint = "ruff check"
+
+[tool.pixi.feature.lock.dependencies]
+pixi-diff-to-markdown = "*"
+pydantic-settings = "<2.9.0"
 
 [tool.pixi.feature.test.dependencies]
 pytest = ">=6.0"
