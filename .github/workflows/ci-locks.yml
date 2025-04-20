@@ -41,12 +41,13 @@ jobs:
       - name: "setup pixi"
         uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da
         with:
+          environments: "ci"
+          activate-environment: true
           run-install: false
 
       - name: "refresh pixi"
         run: |
-          pixi clean cache --exec
-          pixi update --json | pixi exec pixi-diff-to-markdown > diff.md
+          pixi update --json | pixi-diff-to-markdown > diff.md
           if [ $(wc -c < diff.md) -lt 10 ]; then
               rm -f diff.md
           fi
