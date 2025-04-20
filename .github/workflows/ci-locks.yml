@@ -41,7 +41,6 @@ jobs:
       - name: "setup pixi"
         uses: prefix-dev/setup-pixi@5044b250243a57e8c78f7c38acd73f6d7954a3cf
         with:
-          cache: false
           run-install: false
 
       - name: "refresh pixi"
