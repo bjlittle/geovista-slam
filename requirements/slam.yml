@@ -11,7 +11,7 @@ dependencies:
 - pip >=25.0.1,<26
 - geovista >=0.5.3,<0.6
 - iris >=3.12.0,<4
-- numpy >=2.2.5,<3
+- numpy >=1.25.0,<3
 - setuptools >=79.0.0,<80
 - setuptools-scm >=8.2.1,<9
 - pip
