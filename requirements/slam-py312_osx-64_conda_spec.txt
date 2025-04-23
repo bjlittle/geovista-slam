@@ -62,7 +62,7 @@ https://conda.anaconda.org/conda-forge/osx-64/libwebp-base-1.5.0-h6cf52b4_0.cond
 https://conda.anaconda.org/conda-forge/osx-64/libjpeg-turbo-3.1.0-h6e16a3a_0.conda#87537967e6de2f885a9fcebd42b7cb10
 https://conda.anaconda.org/conda-forge/osx-64/libdeflate-1.23-hcc1b750_0.conda#5d3507f22dda24f7d9a79325ad313e44
 https://conda.anaconda.org/conda-forge/osx-64/lerc-4.0.0-hcca01a6_1.conda#21f765ced1a0ef4070df53cb425e1967
-https://conda.anaconda.org/conda-forge/osx-64/libtiff-4.7.0-hb77a491_3.conda#6f2f9df7b093d6b33bc0c334acc7d2d9
+https://conda.anaconda.org/conda-forge/osx-64/libtiff-4.7.0-hb77a491_4.conda#b36d793dd65b28e3aeaa3a77abe71678
 https://conda.anaconda.org/conda-forge/osx-64/libssh2-1.11.1-h3dc7d44_0.conda#b1caec4561059e43a5d056684c5a2de0
 https://conda.anaconda.org/conda-forge/osx-64/libev-4.33-h10d778d_2.conda#899db79329439820b7e8f8de41bca902
 https://conda.anaconda.org/conda-forge/osx-64/c-ares-1.34.5-hf13058a_0.conda#eafe5d9f1a8c514afe41e6e833f66dfd
@@ -98,7 +98,9 @@ https://conda.anaconda.org/conda-forge/osx-64/xorg-libxau-1.0.12-h6e16a3a_0.cond
 https://conda.anaconda.org/conda-forge/osx-64/pthread-stubs-0.4-h00291cd_1002.conda#8bcf980d2c6b17094961198284b8e862
 https://conda.anaconda.org/conda-forge/osx-64/libxcb-1.17.0-hf1f96e2_0.conda#bbeca862892e2898bdb45792a61c4afc
 https://conda.anaconda.org/conda-forge/osx-64/lcms2-2.17-h72f5680_0.conda#bf210d0c63f2afb9e414a858b79f0eaa
-https://conda.anaconda.org/conda-forge/osx-64/freetype-2.13.3-h40dfd5c_0.conda#e391f0c2d07df272cf7c6df235e97bb9
+https://conda.anaconda.org/conda-forge/osx-64/libfreetype6-2.13.3-h40dfd5c_1.conda#c76e6f421a0e95c282142f820835e186
+https://conda.anaconda.org/conda-forge/osx-64/libfreetype-2.13.3-h694c41f_1.conda#07c8d3fbbe907f32014b121834b36dd5
+https://conda.anaconda.org/conda-forge/osx-64/freetype-2.13.3-h694c41f_1.conda#126dba1baf5030cb6f34533718924577
 https://conda.anaconda.org/conda-forge/osx-64/pillow-11.1.0-py312hd9f36e3_0.conda#3b4657a78aaca3af9b392b0657eb3e94
 https://conda.anaconda.org/conda-forge/osx-64/kiwisolver-1.4.8-py312h9275861_0.conda#88135d68c4ab7e6aedf52765b92acc70
 https://conda.anaconda.org/conda-forge/osx-64/unicodedata2-16.0.0-py312h01d7ebd_0.conda#27740ecb2764b1cddbe1e7412ed16034
