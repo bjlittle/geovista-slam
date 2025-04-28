@@ -18,7 +18,7 @@ concurrency:
 
 env:
   SHELLOPTS: "errexit:pipefail"
-  NAME: "slam-py312"
+  NAME: "py312-slam"
 
 defaults:
   run:
@@ -50,7 +50,7 @@ jobs:
               rm -f diff.md
           fi
 
-      - name: "refresh conda"
+      - name: "refresh locks"
         if: ${{ hashFiles('diff.md') }}
         run: |
           pixi workspace export conda-explicit-spec --environment ${{ env.NAME }} --frozen --ignore-pypi-errors requirements
