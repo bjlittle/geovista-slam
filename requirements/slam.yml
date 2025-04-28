@@ -1,4 +1,4 @@
-name: slam-py312
+name: py312-slam
 channels:
 - conda-forge
 - nodefaults
