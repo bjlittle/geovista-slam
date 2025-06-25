@@ -122,6 +122,8 @@ class Transform:
     def __init__(
         self,
         ucube: Cube,
+        /,
+        *,
         crs: CoordSystem | None = None,
         decimals: int | None = None,
         fast_solve: bool | None = None,
@@ -148,7 +150,7 @@ class Transform:
         )
         self._mesh = ucube.mesh
 
-    def __call__(self, ucube: Cube, share: bool | None = None) -> Cube:
+    def __call__(self, ucube: Cube, /, *, share: bool | None = None) -> Cube:
         """TBD.
 
         Parameters
@@ -319,7 +321,7 @@ class Transform:
         return mesh
 
     @staticmethod
-    def _extract_edges(mesh: PolyData, iteration: int | None = 0) -> Edge:
+    def _extract_edges(mesh: PolyData, /, *, iteration: int | None = 0) -> Edge:
         """TBD.
 
         Parameters
@@ -411,6 +413,8 @@ class Transform:
         ucube: Cube,
         mesh: PolyData,
         grid: ArrayLike,
+        /,
+        *,
         crs: CoordSystem | None = None,
         decimals: int | None = None,
         rounding: bool | None = None,
@@ -558,6 +562,8 @@ class Transform:
         mesh: PolyData,
         edge: Edge,
         grid: ArrayLike,
+        /,
+        *,
         iteration: int | None = 0,
     ) -> None:
         """TBD.
@@ -616,6 +622,8 @@ class Transform:
     def _restructure(
         ucube: Cube,
         structure: Structure,
+        /,
+        *,
         share: bool | None = None,
     ) -> Cube:
         """TBD.
@@ -697,6 +705,8 @@ class Transform:
     def _solver(
         cls: Transform,
         ucube: Cube,
+        /,
+        *,
         crs: CoordSystem | None = None,
         decimals: int | None = None,
         fast_solve: bool | None = None,
@@ -742,7 +752,7 @@ class Transform:
         return Structure(coords=coords, edge=edge, grid=grid, mesh=mesh)
 
     @staticmethod
-    def _verify(ucube: Cube, crs: CoordSystem | None = None) -> None:
+    def _verify(ucube: Cube, /, *, crs: CoordSystem | None = None) -> None:
         """TBD.
 
         Parameters
@@ -788,6 +798,8 @@ class Transform:
     def from_ugrid(
         cls: Transform,
         ucube: Cube,
+        /,
+        *,
         crs: CoordSystem | None = None,
         decimals: int | None = None,
         fast_solve: bool | None = None,
@@ -816,7 +828,7 @@ class Transform:
         structure = cls._solver(
             ucube, crs=crs, decimals=decimals, fast_solve=fast_solve, rounding=rounding
         )
-        return cls._restructure(ucube, structure)
+        return cls._restructure(ucube, share=structure)
 
     @property
     def grid(self) -> ArrayLike:
