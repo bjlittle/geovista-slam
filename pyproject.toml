@@ -111,11 +111,6 @@ preview = false
 ignore = [
     # NOTE: Non-permanent exclusions should be added to ".ruff.toml".
 
-    # flake8-annotations (ANN)
-    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
-    "ANN101",  # Missing type annotation for 'self' in method.
-    "ANN102",  # Missing type annotation for 'cls' in classmethod.
-
     # flake8-commas (COM)
     # https://docs.astral.sh/ruff/rules/#flake8-commas-com
     "COM812",  # Trailing comma missing.
@@ -206,7 +201,7 @@ setuptools-scm = ">=8.2.1,<9"
 
 [tool.pixi.feature.dev.dependencies]
 pre-commit = ">=4.2.0,<5"
-ruff = ">=0.11.6,<0.12"
+ruff = ">=0.12.0,<0.13"
 
 [tool.pixi.feature.dev.pypi-dependencies]
 geovista-slam = { path = ".", editable = true }
