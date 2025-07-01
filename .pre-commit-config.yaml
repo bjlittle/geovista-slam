@@ -106,3 +106,8 @@ repos:
     - id: sp-repo-review
       additional_dependencies: ["repo-review[cli]"]
       args: ["--show=errskip"]
+
+- repo: https://github.com/zizmorcore/zizmor-pre-commit
+  rev: v1.10.0
+  hooks:
+    - id: zizmor
