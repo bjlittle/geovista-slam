@@ -202,6 +202,7 @@ setuptools-scm = ">=8.2.1,<9"
 [tool.pixi.feature.dev.dependencies]
 pre-commit = ">=4.2.0,<5"
 ruff = ">=0.12.0,<0.13"
+zizmor = ">=1.9.0,<2"
 
 [tool.pixi.feature.dev.pypi-dependencies]
 geovista-slam = { path = ".", editable = true }
