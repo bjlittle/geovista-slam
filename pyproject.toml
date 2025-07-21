@@ -14,7 +14,6 @@ authors = [
 classifiers = [
     "Development Status :: 1 - Planning",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
@@ -43,7 +42,8 @@ keywords = [
     "unstructured",
     "vtk",
 ]
-license = {text = "BSD-3-Clause"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 name = "geovista-slam"
 requires-python = ">=3.11"
 
@@ -152,7 +152,6 @@ convention = "numpy"
 max-args = 6
 
 [tool.setuptools]
-license-files = ["LICENSE"]
 zip-safe = false
 
 [tool.setuptools.dynamic]
