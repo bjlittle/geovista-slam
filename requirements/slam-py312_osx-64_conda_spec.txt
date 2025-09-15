@@ -15,7 +15,7 @@ https://conda.anaconda.org/conda-forge/osx-64/libffi-3.4.6-h281671d_1.conda#4ca9
 https://conda.anaconda.org/conda-forge/osx-64/libexpat-2.7.1-h21dd04a_0.conda#9fdeae0b7edda62e989557d645769515
 https://conda.anaconda.org/conda-forge/osx-64/bzip2-1.0.8-h500dc9f_8.conda#97c4b3bd8a90722104798175a1bdddbf
 https://conda.anaconda.org/conda-forge/osx-64/python-3.12.11-h9ccd52b_0_cpython.conda#06049132ecd09d0c1dc3d54d93cf1d5d
-https://conda.anaconda.org/conda-forge/osx-64/zizmor-1.12.1-py312h864d763_1.conda#f7e8c10df43ba5f0e85e069f5f57b350
+https://conda.anaconda.org/conda-forge/osx-64/zizmor-1.13.0-py312h1f62012_0.conda#2fb0b275461c0cabd90b5c59f859d701
 https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.15.0-pyhcf101f3_0.conda#0caa1af407ecff61170c9437a808404d
 https://conda.anaconda.org/conda-forge/noarch/typing-extensions-4.15.0-h396c80c_0.conda#edd329d7d3a4ab45dcf905899a7a6115
 https://conda.anaconda.org/conda-forge/noarch/tomli-2.2.1-pyhe01879c_2.conda#30a0a26c8abccf4b7991d590fe17c699
@@ -94,7 +94,7 @@ https://conda.anaconda.org/conda-forge/osx-64/netcdf4-1.7.2-nompi_py312h9f6d095_
 https://conda.anaconda.org/conda-forge/osx-64/qhull-2020.2-h3c5361c_5.conda#dd1ea9ff27c93db7c01a7b7656bd4ad4
 https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda#3339e3b65d58accf4ca4fb8748ab16b3
 https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda#5b8d21249ff20967101ffa321cab24e8
-https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.2.3-pyhe01879c_2.conda#aa0028616c0750c773698fdc254b2b8d
+https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.2.4-pyhcf101f3_0.conda#bf1f1292fc78307956289707e85cb1bf
 https://conda.anaconda.org/conda-forge/osx-64/libpng-1.6.50-h84aeda2_1.conda#1fe32bb16991a24e112051cc0de89847
 https://conda.anaconda.org/conda-forge/osx-64/openjpeg-2.5.3-h036ada5_1.conda#38f264b121a043cf379980c959fb2d75
 https://conda.anaconda.org/conda-forge/osx-64/xorg-libxdmcp-1.1.5-h00291cd_0.conda#9f438e1b6f4e73fd9e6d78bfe7c36743
@@ -144,7 +144,7 @@ https://conda.anaconda.org/conda-forge/noarch/aiosignal-1.4.0-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/noarch/aiohappyeyeballs-2.6.1-pyhd8ed1ab_0.conda#18fd895e0e775622906cdabfc3cf0fb4
 https://conda.anaconda.org/conda-forge/osx-64/aiohttp-3.12.15-py312h3d55d04_0.conda#af245c6a9327e623a25008ba60e93369
 https://conda.anaconda.org/conda-forge/noarch/wslink-2.4.0-pyhd8ed1ab_0.conda#a7c17eeb817efebaf59a48fdeab284a4
-https://conda.anaconda.org/conda-forge/osx-64/utfcpp-4.0.6-h93fb1c9_0.conda#674132c65b17f287badb24a9cd807f96
+https://conda.anaconda.org/conda-forge/osx-64/utfcpp-4.0.7-h694c41f_0.conda#cbb83d9ec533e80e9e1c5ba1e59dbac1
 https://conda.anaconda.org/conda-forge/osx-64/libhwloc-2.12.1-default_h8c32e24_1000.conda#622d2b076d7f0588ab1baa962209e6dd
 https://conda.anaconda.org/conda-forge/osx-64/tbb-2022.2.0-hc025b3e_1.conda#796b8d4a40afd4951d87ffd939c6a206
 https://conda.anaconda.org/conda-forge/osx-64/pcre2-10.45-hf733adb_0.conda#d9f1976154f2f45588251dcfc48bcdda
@@ -189,7 +189,7 @@ https://conda.anaconda.org/conda-forge/osx-64/svt-av1-3.1.2-h21dd04a_0.conda#c11
 https://conda.anaconda.org/conda-forge/osx-64/libusb-1.0.29-h2287256_0.conda#e5d5fd6235a259665d7652093dc7d6f1
 https://conda.anaconda.org/conda-forge/osx-64/dbus-1.16.2-h27bd348_0.conda#ed5f537f1cefb3a15bcce7cb02d3c149
 https://conda.anaconda.org/conda-forge/osx-64/sdl3-3.2.22-hc0b302d_0.conda#dcaf060cee2fb96259b989c44505d4bf
-https://conda.anaconda.org/conda-forge/osx-64/sdl2-2.32.54-h92383a6_0.conda#20cba443d3a3b5da52bd8ba52a7c3bda
+https://conda.anaconda.org/conda-forge/osx-64/sdl2-2.32.56-h53ec75d_0.conda#0a8a18995e507da927d1f8c4b7f15ca8
 https://conda.anaconda.org/conda-forge/osx-64/openh264-2.6.0-h4883158_0.conda#774f56cba369e2286e4922c8f143694a
 https://conda.anaconda.org/conda-forge/osx-64/libvpx-1.14.1-hf036a51_0.conda#9b8744a702ffb1738191e094e6eb67dc
 https://conda.anaconda.org/conda-forge/osx-64/fribidi-1.0.16-h8616949_0.conda#4422491d30462506b9f2d554ab55e33d

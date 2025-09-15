@@ -24,7 +24,7 @@ https://conda.anaconda.org/conda-forge/linux-64/libexpat-2.7.1-hecca717_0.conda#
 https://conda.anaconda.org/conda-forge/linux-64/ld_impl_linux-64-2.44-h1423503_1.conda#0be7c6e070c19105f966d3758448d018
 https://conda.anaconda.org/conda-forge/linux-64/bzip2-1.0.8-hda65f42_8.conda#51a19bba1b8ebfb60df25cde030b7ebc
 https://conda.anaconda.org/conda-forge/linux-64/python-3.12.11-h9e4cc4f_0_cpython.conda#94206474a5608243a10c92cefbe0908f
-https://conda.anaconda.org/conda-forge/linux-64/zizmor-1.12.1-py312h0ccc70a_1.conda#53491793de4dc66306b1bc176975374c
+https://conda.anaconda.org/conda-forge/linux-64/zizmor-1.13.0-py312h0ccc70a_0.conda#1802d4e677dd43b134e016584d939707
 https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.15.0-pyhcf101f3_0.conda#0caa1af407ecff61170c9437a808404d
 https://conda.anaconda.org/conda-forge/noarch/typing-extensions-4.15.0-h396c80c_0.conda#edd329d7d3a4ab45dcf905899a7a6115
 https://conda.anaconda.org/conda-forge/noarch/tomli-2.2.1-pyhe01879c_2.conda#30a0a26c8abccf4b7991d590fe17c699
@@ -104,7 +104,7 @@ https://conda.anaconda.org/conda-forge/linux-64/netcdf4-1.7.2-nompi_py312ha728dd
 https://conda.anaconda.org/conda-forge/linux-64/qhull-2020.2-h434a139_5.conda#353823361b1d27eb3960efb076dfcaf6
 https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda#3339e3b65d58accf4ca4fb8748ab16b3
 https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda#5b8d21249ff20967101ffa321cab24e8
-https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.2.3-pyhe01879c_2.conda#aa0028616c0750c773698fdc254b2b8d
+https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.2.4-pyhcf101f3_0.conda#bf1f1292fc78307956289707e85cb1bf
 https://conda.anaconda.org/conda-forge/linux-64/libpng-1.6.50-h421ea60_1.conda#7af8e91b0deb5f8e25d1a595dea79614
 https://conda.anaconda.org/conda-forge/linux-64/openjpeg-2.5.3-h55fea9a_1.conda#01243c4aaf71bde0297966125aea4706
 https://conda.anaconda.org/conda-forge/linux-64/xorg-libxdmcp-1.1.5-hb9d3cd8_0.conda#8035c64cb77ed555e3f150b7b3972480
@@ -162,7 +162,7 @@ https://conda.anaconda.org/conda-forge/noarch/aiosignal-1.4.0-pyhd8ed1ab_0.conda
 https://conda.anaconda.org/conda-forge/noarch/aiohappyeyeballs-2.6.1-pyhd8ed1ab_0.conda#18fd895e0e775622906cdabfc3cf0fb4
 https://conda.anaconda.org/conda-forge/linux-64/aiohttp-3.12.15-py312h8a5da7c_0.conda#26123b7166da2af08afb6172b5a4806c
 https://conda.anaconda.org/conda-forge/noarch/wslink-2.4.0-pyhd8ed1ab_0.conda#a7c17eeb817efebaf59a48fdeab284a4
-https://conda.anaconda.org/conda-forge/linux-64/utfcpp-4.0.6-h005c6e1_0.conda#9464e297fa2bf08030c65a54342b48c3
+https://conda.anaconda.org/conda-forge/linux-64/utfcpp-4.0.7-ha770c72_0.conda#e58a57bcde090ca129e9b2f0d9ec8289
 https://conda.anaconda.org/conda-forge/linux-64/libhwloc-2.12.1-default_h3d81e11_1000.conda#d821210ab60be56dd27b5525ed18366d
 https://conda.anaconda.org/conda-forge/linux-64/tbb-2022.2.0-hb60516a_1.conda#29ed2be4b47b5aa1b07689e12407fbfd
 https://conda.anaconda.org/conda-forge/linux-64/xorg-libxi-1.8.2-hb9d3cd8_0.conda#17dcc85db3c7886650b8908b183d6876
