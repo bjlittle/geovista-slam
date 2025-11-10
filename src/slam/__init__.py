@@ -828,7 +828,7 @@ class Transform:
         structure = cls._solver(
             ucube, crs=crs, decimals=decimals, fast_solve=fast_solve, rounding=rounding
         )
-        return cls._restructure(ucube, share=structure)
+        return cls._restructure(ucube, structure)
 
     @property
     def grid(self) -> ArrayLike:
