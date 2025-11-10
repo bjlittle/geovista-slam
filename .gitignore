@@ -143,3 +143,6 @@ dmypy.json
 # pixi environments
 .pixi
 *.egg-info
+
+# slam specific
+*.nc

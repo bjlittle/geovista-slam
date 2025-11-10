@@ -22,7 +22,7 @@ def timeit(name: str | None = None) -> None:
         print(f"\ntimeit = {datetime.now() - start}{msg}\n")
 
 
-fname = "/project/avd/ng-vat/data/Anke-Finnenkoetter/examples/falklands_startdump.nc"
+fname = "falklands_startdump.nc"
 with PARSE_UGRID_ON_LOAD.context():
     ucube = iris.load_cube(fname, "air_potential_temperature")
 print(ucube)
