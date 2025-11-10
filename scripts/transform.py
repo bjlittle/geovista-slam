@@ -6,7 +6,6 @@ from datetime import datetime
 import iris
 from iris.coord_systems import RotatedGeogCS
 from iris.cube import Cube
-from iris.experimental.ugrid import PARSE_UGRID_ON_LOAD
 
 import slam
 
@@ -27,8 +26,7 @@ def show(cubes: dict[str, Cube]) -> None:
 
 
 fname = "falklands_startdump.nc"
-with PARSE_UGRID_ON_LOAD.context():
-    ucubes = iris.load(fname)
+ucubes = iris.load(fname)
 
 with timeit("extract"):
     names = (

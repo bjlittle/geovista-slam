@@ -3,14 +3,12 @@ from __future__ import annotations
 import geovista as gv
 import iris
 from iris.coord_systems import RotatedGeogCS
-from iris.experimental.ugrid import PARSE_UGRID_ON_LOAD
 import pyvista as pv
 
 import slam
 
 fname = "falklands_startdump.nc"
-with PARSE_UGRID_ON_LOAD.context():
-    ucube = iris.load_cube(fname, "air_potential_temperature")
+ucube = iris.load_cube(fname, "air_potential_temperature")
 
 print(ucube.summary(shorten=True))
 

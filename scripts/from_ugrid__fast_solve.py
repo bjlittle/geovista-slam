@@ -5,7 +5,6 @@ from datetime import datetime
 
 import iris
 from iris.coord_systems import RotatedGeogCS
-from iris.experimental.ugrid import PARSE_UGRID_ON_LOAD
 import iris.quickplot as qplt
 import matplotlib.pyplot as plt
 
@@ -23,8 +22,7 @@ def timeit(name: str | None = None) -> None:
 
 
 fname = "falklands_startdump.nc"
-with PARSE_UGRID_ON_LOAD.context():
-    ucube = iris.load_cube(fname, "air_potential_temperature")
+ucube = iris.load_cube(fname, "air_potential_temperature")
 print(ucube)
 
 crs = RotatedGeogCS(38.12, 293.1, north_pole_grid_longitude=180)
