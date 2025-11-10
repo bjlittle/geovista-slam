@@ -26,7 +26,7 @@ def show(cubes: dict[str, Cube]) -> None:
         print(cube.summary(shorten=True))
 
 
-fname = "/project/avd/ng-vat/data/Anke-Finnenkoetter/examples/falklands_startdump.nc"
+fname = "falklands_startdump.nc"
 with PARSE_UGRID_ON_LOAD.context():
     ucubes = iris.load(fname)
 
