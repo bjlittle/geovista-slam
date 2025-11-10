@@ -3,13 +3,13 @@ channels:
 - conda-forge
 - nodefaults
 dependencies:
-- pytest >=8.3.5,<9
+- pytest >=8.3.5,<10
 - pre-commit >=4.2.0,<5
-- ruff >=0.12.0,<0.13
+- ruff >=0.12.0,<0.15
 - zizmor >=1.9.0,<2
+- pip >=25.0.1,<26
 - python 3.12.*
 - python >=3.11
-- pip >=25.0.1,<26
 - geovista >=0.5.3,<0.6
 - iris >=3.12.0,<4
 - numpy >=1.25.0,<3
