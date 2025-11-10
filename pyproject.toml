@@ -206,10 +206,6 @@ zizmor = ">=1.9.0,<2"
 [tool.pixi.feature.dev.pypi-dependencies]
 geovista-slam = { path = ".", editable = true }
 
-[tool.pixi.feature.dev.tasks]
-fmt = "ruff format"
-lint = "ruff check"
-
 [tool.pixi.feature.test.dependencies]
 pytest = ">=8.3.5,<10"
 
