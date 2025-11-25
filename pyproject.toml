@@ -75,6 +75,7 @@ filterwarnings = [
 ]
 log_cli = "True"
 log_cli_level = "INFO"
+log_level = "INFO"
 minversion = "6.0"
 testpaths = "tests"
 xfail_strict = "True"
