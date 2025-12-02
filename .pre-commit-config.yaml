@@ -38,7 +38,7 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: "v0.14.6"
+  rev: "v0.14.7"
   hooks:
   - id: ruff-check
     types: [file, python]
@@ -110,6 +110,6 @@ repos:
       args: ["--show=errskip"]
 
 - repo: https://github.com/zizmorcore/zizmor-pre-commit
-  rev: v1.16.3
+  rev: v1.18.0
   hooks:
     - id: zizmor
