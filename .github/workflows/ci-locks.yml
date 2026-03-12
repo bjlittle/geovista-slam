@@ -33,6 +33,8 @@ jobs:
     name: "update lockfiles"
     runs-on: ubuntu-latest
 
+    environment: development
+
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
@@ -62,7 +64,7 @@ jobs:
         if: ${{ hashFiles('diff.md') }}
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GEOVISTA_BOT_TOKEN }}
           add-paths: |
             ${{ github.workspace }}/pixi.lock
             ${{ github.workspace }}/requirements/slam*.txt

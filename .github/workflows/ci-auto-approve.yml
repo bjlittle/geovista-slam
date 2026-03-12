@@ -27,6 +27,8 @@ jobs:
     permissions:
       pull-requests: write
 
+    environment: development
+
     steps:
       - name: "verify"
         id: verify
@@ -56,7 +58,7 @@ jobs:
           GITHUB_EVENT_COMMENT_HTML_URL: ${{ github.event.comment.html_url }}
 
       - name: "reaction"
-        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9  # zizmor: ignore[superfluous-actions]
         with:
           comment-id: ${{ github.event.comment.id }}
           token: ${{ secrets.GEOVISTA_BOT_TOKEN }}
@@ -72,7 +74,7 @@ jobs:
 
       - name: "deny"
         if: ${{ steps.verify.outputs.valid == 'false' }}
-        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9  # zizmor: ignore[superfluous-actions]
         with:
           issue-number: ${{ github.event.issue.number }}
           token: ${{ secrets.GEOVISTA_BOT_TOKEN }}
