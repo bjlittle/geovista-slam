@@ -38,7 +38,7 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: "v0.15.7"
+  rev: "v0.15.8"
   hooks:
   - id: ruff-check
     types: [file, python]
@@ -65,7 +65,7 @@ repos:
   - id: validate-pyproject
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.37.0
+  rev: 0.37.1
   hooks:
   - id: check-dependabot
   - id: check-github-workflows
