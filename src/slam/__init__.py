@@ -1099,6 +1099,13 @@ class Transform:
                 raise ValueError(emsg) from err
 
             manifest = json.loads((tmp / "manifest.json").read_text())
+            if not isinstance(manifest, dict):
+                emsg = (
+                    f"Cannot load slam archive {str(path)!r}, manifest is not a "
+                    f"valid JSON object."
+                )
+                raise ValueError(emsg)
+
             fmt, version = manifest.get("format"), manifest.get("format_version")
             if fmt != SLAM_ARCHIVE_FORMAT or version != SLAM_ARCHIVE_VERSION:
                 # surface the writing slam version to aid diagnosis
