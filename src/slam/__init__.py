@@ -18,6 +18,7 @@ import iris
 from iris.coord_systems import CoordSystem
 from iris.coords import AuxCoord, DimCoord
 from iris.cube import Cube
+from iris.exceptions import CoordinateNotFoundError
 import numpy as np
 import pyvista as pv
 
@@ -1023,19 +1024,36 @@ class Transform:
 
         structure_cube, anchor_cube = by_role["structure"], by_role["crs"]
 
-        x_coord = structure_cube.coord(axis="x")
-        y_coord = structure_cube.coord(axis="y")
+        # a correctly tagged role is not enough: the structure and anchor cubes
+        # must each carry both spatial axes, and the source_mesh cube must carry
+        # a mesh, otherwise the archive is corrupt beyond reconstruction
+        emsg = (
+            f"Cannot load slam archive {str(path)!r}, the source cubes are "
+            "missing or corrupt."
+        )
+        try:
+            x_coord = structure_cube.coord(axis="x")
+            y_coord = structure_cube.coord(axis="y")
+            anchor_x = anchor_cube.coord(axis="x")
+            anchor_y = anchor_cube.coord(axis="y")
+        except CoordinateNotFoundError as err:
+            raise ValueError(emsg) from err
+
         # netcdf drops the coord_system from 2-D aux coords, so restore each
         # axis from the anchor (whose 1-D dim coords round-trip it reliably),
         # keeping the x and y coord systems independent
-        x_coord.coord_system = anchor_cube.coord(axis="x").coord_system
-        y_coord.coord_system = anchor_cube.coord(axis="y").coord_system
+        x_coord.coord_system = anchor_x.coord_system
+        y_coord.coord_system = anchor_y.coord_system
         # the solver builds spatial coords with no var_name, so clear the
         # netcdf-assigned var_name to match a freshly solved transform
         x_coord.var_name = y_coord.var_name = None
         coords = Coords(x=x_coord, y=y_coord)
 
-        return coords, by_role["source_mesh"].mesh
+        source_mesh = by_role["source_mesh"].mesh
+        if source_mesh is None:
+            raise ValueError(emsg)
+
+        return coords, source_mesh
 
     @classmethod
     def load(cls: type[Transform], fname: PathLike) -> Transform:
