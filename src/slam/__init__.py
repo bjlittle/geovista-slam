@@ -4,17 +4,23 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass, field
+import json
 from pathlib import Path
+import tempfile
 from typing import TYPE_CHECKING, Any, TypeAlias
 import warnings
+import zipfile
 
 import geovista as gv
 from geovista.common import from_cartesian, wrap
 from geovista.crs import WGS84
+import iris
 from iris.coord_systems import CoordSystem
 from iris.coords import AuxCoord, DimCoord
 from iris.cube import Cube
+from iris.exceptions import CoordinateNotFoundError
 import numpy as np
+import pyvista as pv
 
 try:
     from ._version import version as __version__
@@ -22,6 +28,7 @@ except ModuleNotFoundError:
     __version__ = "unknown"
 
 if TYPE_CHECKING:
+    from iris.mesh import MeshXY
     from numpy.typing import ArrayLike
     from pyvista import PolyData, UnstructuredGrid
 
@@ -52,6 +59,23 @@ DEFAULT_CF_COORDINATE_SYSTEM: list[dict[str, Any]] = [
     },
 ]
 MDI: int = -1
+SLAM_ARCHIVE_FORMAT: str = "slam-transform"
+SLAM_ARCHIVE_VERSION: int = 1
+# the slam archive members, shared by Transform.save and Transform.load so the
+# two never drift apart
+SLAM_ARCHIVE_MEMBERS: tuple[str, ...] = (
+    "manifest.json",
+    "grid.npy",
+    "edge.npz",
+    "mesh.vtp",
+    "source.nc",
+)
+# the roles carried by the cubes within the source.nc archive member
+SLAM_SOURCE_ROLES: tuple[str, ...] = ("source_mesh", "structure", "crs")
+# a stable prefix of the benign netCDF4/pyvista/NumPy 2.5 deprecation emitted
+# when (de)serialising arrays; matched as a prefix so it survives changes to the
+# version-specific tail of the message
+NUMPY_SHAPE_DEPRECATION: str = "Setting the shape on a NumPy array"
 
 
 # TODO @bjlittle: trap for non-quad mesh
@@ -61,7 +85,6 @@ MDI: int = -1
 # TODO @bjlittle: test coverage
 # TODO @bjlittle: restructure factories and anything spanning mesh dimension
 # TODO @bjlittle: discover crs from mesh
-# TODO @bjlittle: load/save
 # TODO @bjlittle: enable ci services
 # TODO @bjlittle: repr/str
 
@@ -110,6 +133,26 @@ class Structure:
     mesh: PolyData
 
 
+def _array_equal(lhs: ArrayLike, rhs: ArrayLike) -> bool:
+    """Compare two array-likes element-wise, tolerating dtype and shape.
+
+    Parameters
+    ----------
+    lhs : ArrayLike
+    rhs : ArrayLike
+
+    Returns
+    -------
+    bool
+
+    Notes
+    -----
+    .. versionadded:: 0.1.0
+
+    """
+    return np.array_equal(np.asarray(lhs), np.asarray(rhs))
+
+
 class Transform:
     """TBD.
 
@@ -145,10 +188,10 @@ class Transform:
 
         """
         self._verify(ucube, crs=crs)
-        self._structure = self._solver(
+        structure = self._solver(
             ucube, crs=crs, decimals=decimals, fast_solve=fast_solve, rounding=rounding
         )
-        self._mesh = ucube.mesh
+        self._assign(structure, ucube.mesh)
 
     def __call__(self, ucube: Cube, /, *, share: bool | None = None) -> Cube:
         """TBD.
@@ -177,6 +220,70 @@ class Transform:
             raise ValueError(emsg)
 
         return self._restructure(ucube, self._structure, share=share)
+
+    def __eq__(self, other: object) -> bool:
+        """Determine whether two solved transforms are equivalent.
+
+        Two transforms are equal when they carry the same solved structure
+        (grid, boundary edges, restructured spatial coordinates and mesh) over
+        the same source CF-UGRID mesh. This makes the equivalence of a
+        :meth:`load` reconstruction to a freshly solved instance assertable.
+
+        Parameters
+        ----------
+        other : object
+
+        Returns
+        -------
+        bool
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
+        if not isinstance(other, Transform):
+            return NotImplemented
+
+        lhs, rhs = self._structure, other._structure
+        edge_fields = ("top", "bottom", "left", "right", "generic")
+
+        return bool(
+            _array_equal(lhs.grid, rhs.grid)
+            and all(
+                _array_equal(getattr(lhs.edge, field), getattr(rhs.edge, field))
+                for field in edge_fields
+            )
+            and lhs.coords.x == rhs.coords.x
+            and lhs.coords.y == rhs.coords.y
+            and _array_equal(lhs.mesh.points, rhs.mesh.points)
+            and _array_equal(lhs.mesh.faces, rhs.mesh.faces)
+            and _array_equal(lhs.mesh.cell_data[CELL_IDS], rhs.mesh.cell_data[CELL_IDS])
+            and self._mesh == other._mesh
+        )
+
+    __hash__ = None
+
+    def _assign(self, structure: Structure, mesh: MeshXY) -> None:
+        """Assign the solved state onto the instance.
+
+        The single choke-point through which both :meth:`__init__` and
+        :meth:`load` populate instance state, so a reconstructed transform can
+        never drift out of step with a freshly solved one.
+
+        Parameters
+        ----------
+        structure : Structure
+        mesh : MeshXY
+            The source CF-UGRID mesh guarded by :meth:`__call__`.
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
+        self._structure = structure
+        self._mesh = mesh
 
     @staticmethod
     def _boundary_shape(edge: Edge) -> ShapeLike:
@@ -558,7 +665,7 @@ class Transform:
 
     @classmethod
     def _matryoshka(
-        cls: Transform,
+        cls: type[Transform],
         mesh: PolyData,
         edge: Edge,
         grid: ArrayLike,
@@ -703,7 +810,7 @@ class Transform:
 
     @classmethod
     def _solver(
-        cls: Transform,
+        cls: type[Transform],
         ucube: Cube,
         /,
         *,
@@ -796,7 +903,7 @@ class Transform:
 
     @classmethod
     def from_ugrid(
-        cls: Transform,
+        cls: type[Transform],
         ucube: Cube,
         /,
         *,
@@ -866,23 +973,199 @@ class Transform:
         )
         return self._structure.mesh.extract_cells(cells)
 
-    @classmethod
-    def load(cls: Transform, fname: PathLike) -> Transform:
-        """TBD.
+    @staticmethod
+    def _load_source(path: Path, source: Path) -> tuple[Coords, MeshXY]:
+        """Read the restructured coords and source mesh from a source.nc member.
 
         Parameters
         ----------
-        fname : PathLike
+        path : Path
+            The slam archive path, used only for error messages.
+        source : Path
+            The extracted ``source.nc`` archive member.
 
         Returns
         -------
-        Transform
+        tuple of Coords, MeshXY
+
+        Raises
+        ------
+        ValueError
+            If the source cubes are missing, corrupt, or carry a duplicate role.
 
         Notes
         -----
         .. versionadded:: 0.1.0
 
         """
+        cubes = iris.load(source)
+
+        # bin the source cubes by role, guarding against a naming collision in
+        # the user's data producing two cubes with the same slam_role
+        by_role: dict[str, Cube] = {}
+        for cube in cubes:
+            role = cube.attributes.get("slam_role")
+            if role not in SLAM_SOURCE_ROLES:
+                continue
+            if role in by_role:
+                emsg = (
+                    f"Cannot load slam archive {str(path)!r}, found duplicate "
+                    f"{role!r} source cubes."
+                )
+                raise ValueError(emsg)
+            by_role[role] = cube
+
+        if set(by_role) != set(SLAM_SOURCE_ROLES):
+            emsg = (
+                f"Cannot load slam archive {str(path)!r}, the source cubes are "
+                "missing or corrupt."
+            )
+            raise ValueError(emsg)
+
+        structure_cube, anchor_cube = by_role["structure"], by_role["crs"]
+
+        # a correctly tagged role is not enough: the structure and anchor cubes
+        # must each carry both spatial axes, and the source_mesh cube must carry
+        # a mesh, otherwise the archive is corrupt beyond reconstruction
+        emsg = (
+            f"Cannot load slam archive {str(path)!r}, the source cubes are "
+            "missing or corrupt."
+        )
+        try:
+            x_coord = structure_cube.coord(axis="x")
+            y_coord = structure_cube.coord(axis="y")
+            anchor_x = anchor_cube.coord(axis="x")
+            anchor_y = anchor_cube.coord(axis="y")
+        except CoordinateNotFoundError as err:
+            raise ValueError(emsg) from err
+
+        # netcdf drops the coord_system from 2-D aux coords, so restore each
+        # axis from the anchor (whose 1-D dim coords round-trip it reliably),
+        # keeping the x and y coord systems independent
+        x_coord.coord_system = anchor_x.coord_system
+        y_coord.coord_system = anchor_y.coord_system
+        # the solver builds spatial coords with no var_name, so clear the
+        # netcdf-assigned var_name to match a freshly solved transform
+        x_coord.var_name = y_coord.var_name = None
+        coords = Coords(x=x_coord, y=y_coord)
+
+        source_mesh = by_role["source_mesh"].mesh
+        if source_mesh is None:
+            raise ValueError(emsg)
+
+        return coords, source_mesh
+
+    @classmethod
+    def load(cls: type[Transform], fname: PathLike) -> Transform:
+        """Load a solved transform from a slam archive on disk.
+
+        Reconstruct a :class:`Transform` from an archive previously created by
+        :meth:`save`, skipping the expensive solve. The reconstructed instance
+        is equivalent to one freshly solved from the same source unstructured
+        cube.
+
+        Parameters
+        ----------
+        fname : PathLike
+            The filename of the slam archive to load.
+
+        Returns
+        -------
+        Transform
+            The reconstructed transform.
+
+        Raises
+        ------
+        ValueError
+            If `fname` does not exist, is not a valid slam archive, or has an
+            unsupported archive format or version.
+
+        Notes
+        -----
+        .. versionadded:: 0.1.0
+
+        """
+        path = Path(fname)
+
+        if not path.is_file():
+            emsg = f"Cannot load slam archive, no such file {str(path)!r}."
+            raise ValueError(emsg)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+
+            try:
+                with zipfile.ZipFile(path, mode="r") as archive:
+                    available = set(archive.namelist())
+                    missing = [
+                        member
+                        for member in SLAM_ARCHIVE_MEMBERS
+                        if member not in available
+                    ]
+                    if missing:
+                        names = ", ".join(repr(member) for member in missing)
+                        emsg = (
+                            f"Cannot load slam archive {str(path)!r}, missing "
+                            f"archive member(s) {names}."
+                        )
+                        raise ValueError(emsg)
+                    # only the known members are extracted (also avoids ruff S202)
+                    for member in SLAM_ARCHIVE_MEMBERS:
+                        archive.extract(member, tmp)
+            except zipfile.BadZipFile as err:
+                emsg = f"Cannot load slam archive {str(path)!r}, not a valid zip file."
+                raise ValueError(emsg) from err
+
+            manifest = json.loads((tmp / "manifest.json").read_text())
+            if not isinstance(manifest, dict):
+                emsg = (
+                    f"Cannot load slam archive {str(path)!r}, manifest is not a "
+                    f"valid JSON object."
+                )
+                raise TypeError(emsg)
+
+            fmt, version = manifest.get("format"), manifest.get("format_version")
+            if fmt != SLAM_ARCHIVE_FORMAT or version != SLAM_ARCHIVE_VERSION:
+                # surface the writing slam version to aid diagnosis
+                wrote = manifest.get("slam_version", "unknown")
+                emsg = (
+                    f"Cannot load slam archive {str(path)!r}, unsupported archive "
+                    f"format {fmt!r} (version {version!r}) written by slam "
+                    f"{wrote!r}."
+                )
+                raise ValueError(emsg)
+
+            archived_class = manifest.get("class")
+            if archived_class != cls.__name__:
+                emsg = (
+                    f"Cannot load slam archive {str(path)!r}, expected a "
+                    f"{cls.__name__!r} archive but got {archived_class!r}."
+                )
+                raise ValueError(emsg)
+
+            grid = np.load(tmp / "grid.npy")
+
+            with np.load(tmp / "edge.npz") as npz:
+                edge = Edge(
+                    top=npz["top"],
+                    bottom=npz["bottom"],
+                    left=npz["left"],
+                    right=npz["right"],
+                    generic=npz["generic"],
+                )
+
+            mesh = pv.read(tmp / "mesh.vtp")
+
+            coords, source_mesh = cls._load_source(path, tmp / "source.nc")
+
+        structure = Structure(coords=coords, edge=edge, grid=grid, mesh=mesh)
+
+        # reconstruct without __init__, which would re-run the expensive solve,
+        # routing state through _assign so it cannot drift from a solved instance
+        inst = cls.__new__(cls)
+        inst._assign(structure, source_mesh)  # noqa: SLF001
+
+        return inst
 
     @property
     def mesh(self) -> PolyData:
@@ -900,13 +1183,139 @@ class Transform:
         return self._structure.mesh.copy()
 
     def save(self, fname: PathLike) -> None:
-        """TBD.
+        """Save the solved transform to a slam archive on disk.
+
+        Persist the entire state of the transform to a single ``zip`` archive of
+        ecosystem-native artifacts, so it may later be reloaded with :meth:`load`
+        in a separate runtime without re-running the expensive solve. An existing
+        archive at `fname` is overwritten.
+
+        Parameters
+        ----------
+        fname : PathLike
+            The filename of the slam archive to create.
+
+        Raises
+        ------
+        ValueError
+            If the transform has not been solved, or `fname` is an existing
+            directory.
 
         Notes
         -----
         .. versionadded:: 0.1.0
 
         """
+        if getattr(self, "_structure", None) is None:
+            emsg = "Cannot save an unsolved transform."
+            raise ValueError(emsg)
+
+        path = Path(fname)
+
+        if path.is_dir():
+            emsg = f"Cannot save slam archive, {str(path)!r} is a directory."
+            raise ValueError(emsg)
+
+        structure = self._structure
+        edge = structure.edge
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+
+            # the expensive matryoshka solve output
+            np.save(tmp / "grid.npy", structure.grid)
+
+            # the boundary edges
+            np.savez(
+                tmp / "edge.npz",
+                top=edge.top,
+                bottom=edge.bottom,
+                left=edge.left,
+                right=edge.right,
+                generic=edge.generic,
+            )
+
+            # the geovista/pyvista mesh, preserving cell_data[CELL_IDS]
+            structure.mesh.save(tmp / "mesh.vtp")
+
+            # a dummy 1-D cube over the mesh dimension, carrying the source
+            # UGRID mesh needed by the __call__ guard
+            mesh_coords = self._mesh.to_MeshCoords("face")
+            n_faces = mesh_coords[0].shape[0]
+            mesh_cube = Cube(
+                np.arange(n_faces), attributes={"slam_role": "source_mesh"}
+            )
+            for mesh_coord in mesh_coords:
+                mesh_cube.add_aux_coord(mesh_coord, 0)
+
+            # a cube carrying the restructured spatial coordinates, using the
+            # same dim/aux logic as _restructure (grid is shaped (ydim, xdim))
+            x_coord, y_coord = structure.coords.x, structure.coords.y
+            structure_cube = Cube(structure.grid, attributes={"slam_role": "structure"})
+            ydim, xdim = 0, 1
+            for coord, cdim in ((x_coord, xdim), (y_coord, ydim)):
+                dims = cdim if coord.ndim == 1 else (ydim, xdim)
+                add_coord = (
+                    structure_cube.add_dim_coord
+                    if isinstance(coord, DimCoord)
+                    else structure_cube.add_aux_coord
+                )
+                add_coord(coord.copy(), dims)
+
+            # a tiny anchor cube whose 1-D dim coords reliably round-trip the
+            # coord_system (netcdf drops it from 2-D aux coords); reattached on
+            # load. Reuse the spatial standard_names so the grid_mapping matches
+            crs = x_coord.coord_system
+            anchor_cube = Cube(
+                np.zeros((1, 1), dtype=int), attributes={"slam_role": "crs"}
+            )
+            anchor_cube.add_dim_coord(
+                DimCoord(
+                    [0.0],
+                    standard_name=y_coord.standard_name,
+                    units=y_coord.units,
+                    coord_system=crs,
+                ),
+                0,
+            )
+            anchor_cube.add_dim_coord(
+                DimCoord(
+                    [0.0],
+                    standard_name=x_coord.standard_name,
+                    units=x_coord.units,
+                    coord_system=crs,
+                ),
+                1,
+            )
+
+            with warnings.catch_warnings():
+                # benign netCDF4/NumPy 2.5 shape-setting deprecation on write;
+                # matched on a stable prefix so it survives changes to the
+                # version-specific tail of the message
+                warnings.filterwarnings(
+                    "ignore",
+                    message=NUMPY_SHAPE_DEPRECATION,
+                    category=DeprecationWarning,
+                )
+                with iris.FUTURE.context(save_split_attrs=True):
+                    iris.save(
+                        [mesh_cube, structure_cube, anchor_cube], tmp / "source.nc"
+                    )
+
+            manifest = {
+                "format": SLAM_ARCHIVE_FORMAT,
+                "format_version": SLAM_ARCHIVE_VERSION,
+                "slam_version": __version__,
+                "class": type(self).__name__,
+            }
+            (tmp / "manifest.json").write_text(json.dumps(manifest))
+
+            # mode="w" truncates any existing archive at path (overwrite)
+            with zipfile.ZipFile(
+                path, mode="w", compression=zipfile.ZIP_DEFLATED
+            ) as archive:
+                for member in SLAM_ARCHIVE_MEMBERS:
+                    archive.write(tmp / member, arcname=member)
 
     @property
     def shape(self) -> ShapeLike:

@@ -1,5 +1,6 @@
 prune requirements
 prune scripts
+prune tests
 exclude .git_archival.txt
 exclude .gitattributes
 exclude .gitignore
