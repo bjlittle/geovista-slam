@@ -1122,7 +1122,7 @@ class Transform:
                     f"Cannot load slam archive {str(path)!r}, manifest is not a "
                     f"valid JSON object."
                 )
-                raise ValueError(emsg)
+                raise TypeError(emsg)
 
             fmt, version = manifest.get("format"), manifest.get("format_version")
             if fmt != SLAM_ARCHIVE_FORMAT or version != SLAM_ARCHIVE_VERSION:
