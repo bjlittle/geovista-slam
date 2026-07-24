@@ -72,6 +72,9 @@ addopts = [
 doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS NUMBER"
 filterwarnings = [
     "error",
+    # benign netCDF4/pyvista/NumPy 2.5 shape-setting deprecation raised deep in
+    # the vtk/netCDF4 stack; matched on a stable prefix (see NUMPY_SHAPE_DEPRECATION)
+    "ignore:Setting the shape on a NumPy array:DeprecationWarning",
 ]
 log_cli = "True"
 log_cli_level = "INFO"
@@ -138,6 +141,12 @@ select = [
     # pydocstyle (D)
     # https://docs.astral.sh/ruff/rules/multi-line-summary-first-line/
     "D212",  # Multi-line docstring summary should start at the first line
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "INP001",  # tests is not an importable package (no __init__.py)
+    "S101",  # asserts are the idiom of pytest tests
 ]
 
 [tool.ruff.lint.isort]
