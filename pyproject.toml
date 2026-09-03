@@ -121,6 +121,10 @@ ignore = [
     # https://docs.astral.sh/ruff/rules/#flake8-commas-com
     "COM812",  # Trailing comma missing.
 
+    # flake8-copyright (CPY)
+    # https://docs.astral.sh/ruff/rules/missing-copyright-notice/
+    "CPY001",  # Missing copyright notice at top of file
+
     # flake8-fixme (FIX)
     # https://docs.astral.sh/ruff/rules/line-contains-todo/
     "FIX002",  # Line contains TODO, consider resolving the issue.
