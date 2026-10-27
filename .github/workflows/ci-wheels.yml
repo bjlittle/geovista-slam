@@ -81,7 +81,7 @@ jobs:
         echo "NAME=py$(echo ${{ matrix.python-version }} | tr -d '.')" >> ${GITHUB_ENV}
 
     - name: "setup pixi"
-      uses: prefix-dev/setup-pixi@9dabb60412d3d2d967a8d682f7ce01317af40514
+      uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
       with:
         environments: ${{ env.NAME }}
         frozen: true
@@ -133,7 +133,7 @@ jobs:
         path: ${{ github.workspace }}/dist
         merge-multiple: true
 
-    - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+    - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086
       with:
         repository-url: https://test.pypi.org/legacy/
         skip-existing: true
@@ -157,6 +157,6 @@ jobs:
         path: ${{ github.workspace }}/dist
         merge-multiple: true
 
-    - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+    - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086
       with:
         print-hash: true
